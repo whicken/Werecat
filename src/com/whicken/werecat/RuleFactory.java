@@ -13,7 +13,7 @@ public class RuleFactory {
     public RuleFactory(Class context) {
 	this.context = context;
     }
-    Method getMethod(String method) {
+    protected Method getMethod(String method) {
 	try {
 	    return context.getDeclaredMethod(method, (Class[]) null);
 	} catch (NoSuchMethodException e) {
