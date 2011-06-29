@@ -10,17 +10,17 @@ tokens {
 }
 
 @header {
-package com.whicken.rule.parser;
+package com.whicken.werecat.parser;
 
-import com.whicken.rule.*;
-import com.whicken.rule.expr.*;
+import com.whicken.werecat.*;
+import com.whicken.werecat.expr.*;
 }
 
 @lexer::header {
-package com.whicken.rule.parser;
+package com.whicken.werecat.parser;
 
-import com.whicken.rule.*;
-import com.whicken.rule.expr.*;
+import com.whicken.werecat.*;
+import com.whicken.werecat.expr.*;
 }
 
 @members {

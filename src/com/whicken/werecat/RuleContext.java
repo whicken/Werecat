@@ -1,4 +1,4 @@
-package com.whicken.rule;
+package com.whicken.werecat;
 
 /**
  * Used to evaluate a path through the RuleEngine.  Subclass and add any

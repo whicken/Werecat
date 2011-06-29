@@ -1,6 +1,6 @@
-package com.whicken.rule;
+package com.whicken.werecat;
 
-import com.whicken.rule.expr.Expression;
+import com.whicken.werecat.expr.Expression;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 

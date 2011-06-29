@@ -1,6 +1,6 @@
-package com.whicken.rule.expr;
+package com.whicken.werecat.expr;
 
-import com.whicken.rule.RuleContext;
+import com.whicken.werecat.RuleContext;
 
 public class EqualExpression extends BinaryExpression {
     public EqualExpression(Expression lhs, Expression rhs) {

@@ -1,6 +1,6 @@
-package com.whicken.rule;
+package com.whicken.werecat;
 
-import com.whicken.rule.parser.ExpressionParser;
+import com.whicken.werecat.parser.ExpressionParser;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;

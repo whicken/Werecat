@@ -1,6 +1,6 @@
-package com.whicken.rule.expr;
+package com.whicken.werecat.expr;
 
-import com.whicken.rule.RuleContext;
+import com.whicken.werecat.RuleContext;
 
 public class DivExpression extends BinaryExpression {
     public DivExpression(Expression lhs, Expression rhs) {

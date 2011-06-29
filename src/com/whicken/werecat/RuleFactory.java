@@ -1,7 +1,7 @@
-package com.whicken.rule;
+package com.whicken.werecat;
 
-import com.whicken.rule.expr.Expression;
-import com.whicken.rule.expr.MethodExpression;
+import com.whicken.werecat.expr.Expression;
+import com.whicken.werecat.expr.MethodExpression;
 import java.lang.reflect.*;
 
 /**
