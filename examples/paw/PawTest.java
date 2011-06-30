@@ -11,6 +11,9 @@ public class PawTest {
 	}
 	public String getName() { return name; }
 	public int getAge() { return age; }
+	public char getFirst() {
+	    return name.charAt(0);
+	}
     };
     public static void main(String[] args) {
 	List<Artist> artists = new ArrayList<Artist>();
@@ -18,7 +21,9 @@ public class PawTest {
 	artists.add(new Artist("Jill", 21));
 
 	PawParser<Artist> parser = new PawParser(Artist.class);
-	PawExpression<Artist> expr = parser.parse("age == 20");
+	// PawExpression<Artist> expr = parser.parse("age == 20");
+	PawExpression<Artist> expr = parser.parse("first == 'B'");
+	System.out.println(c+" "+i);
 	for (Artist a : artists) {
 	    Object o = expr.getValue(a);
 	    System.out.println(a.name+": "+o);

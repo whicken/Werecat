@@ -96,6 +96,8 @@ factor returns [Expression value]
     : n=NUMBER { $value = new NumberConstant(Double.parseDouble($n.text)); }
     | n2=method { $value = $n2.value; }
     | n3=value { $value = $n3.value; }
+    | n4=STRINGLITERAL { $value = new StringConstant($n4.text); }
+    | n5=CHARLITERAL { $value = new NumberConstant($n5.text.charAt(1)); }
     | TRUE { $value = new NumberConstant(1); }
     | FALSE { $value = new NumberConstant(0); }
     | NULL { $value = new StringConstant(null); }
@@ -129,6 +131,43 @@ IDENTIFIER: IdentifierStart IdentifierPart* ;
 NUMBER: (DIGIT)+ ;
 
 WHITESPACE : ( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ { $channel = HIDDEN; } ;
+
+CHARLITERAL
+    :   '\''
+        (   EscapeSequence
+        |   ~( '\'' | '\\' | '\r' | '\n' )
+        )
+        '\''
+    ;
+
+STRINGLITERAL
+    :   '"'
+        (   EscapeSequence
+        |   ~( '\\' | '"' | '\r' | '\n' )
+        )*
+        '"'
+    ;
+
+
+fragment
+EscapeSequence
+    :   '\\' (
+                 'b'
+        |   't'
+        |   'n'
+        |   'f'
+        |   'r'
+        |   '\"'
+        |   '\''
+        |   '\\'
+        |
+            ('0'..'3') ('0'..'7') ('0'..'7')
+        |
+            ('0'..'7') ('0'..'7')
+        |
+            ('0'..'7')
+        )
+    ;
 
 
 fragment DIGIT: '0'..'9' ;

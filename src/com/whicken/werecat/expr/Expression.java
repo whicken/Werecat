@@ -12,6 +12,8 @@ public abstract class Expression {
 	    return false;
 	if (o instanceof Boolean)
 	    return ((Boolean) o).booleanValue();
+	if (o instanceof Character)
+	    return ((Character) o).charValue() != 0;
 	if (o instanceof Double)
 	    return ((Double) o).doubleValue() != 0;
 	if (o instanceof Long)
@@ -34,6 +36,8 @@ public abstract class Expression {
 	    return ((Integer) o).intValue();
 	if (o instanceof Short)
 	    return ((Short) o).shortValue();
+	if (o instanceof Character)
+	    return ((Character) o).charValue();
 	if (o instanceof Boolean)
 	    return ((Boolean) o).booleanValue() ? 1 : 0;
 	throw new RuntimeException("Unexpected numeric conversion: "+o);
