@@ -58,8 +58,25 @@ import com.whicken.werecat.expr.*;
 // Top of the tree
 
 expr returns [Expression value]
-    : v=eqExpr { $value = $v.value; }
+    : v=orExpr { $value = $v.value; }
     ;
+
+orExpr returns [Expression value]
+    :   lhs=andExpr { $value = $lhs.value; }
+        (
+          '||' rhs=andExpr { $value = new OrExpression($value, $rhs.value); }
+        | OR rhs=andExpr { $value = new OrExpression($value, $rhs.value); }
+        )*
+    ;
+
+andExpr returns [Expression value]
+    :   lhs=eqExpr { $value = $lhs.value; }
+        (
+          '&&' rhs=eqExpr { $value = new AndExpression($value, $rhs.value); }
+        | AND rhs=eqExpr { $value = new AndExpression($value, $rhs.value); }
+        )*
+    ;
+
 
 eqExpr returns [Expression value]
     : lhs=relExpr { $value = $lhs.value; } 
@@ -122,6 +139,10 @@ value returns [Expression value]
 /*------------------------------------------------------------------
  * LEXER RULES
  *------------------------------------------------------------------*/
+
+AND: 'and';
+
+OR: 'or';
 
 TRUE: 'true';
 

@@ -20,7 +20,6 @@ public class RuleEngine {
 	    JSONTokener token = new JSONTokener(new FileReader(file));
 	    JSONObject obj = new JSONObject(token);
 
-	    String top = obj.getString("top");
 	    String version = obj.getString("version");
 	    JSONObject rulesObject = obj.getJSONObject("rules");
 
@@ -31,9 +30,12 @@ public class RuleEngine {
 		rules.put(tag, new Rule(tag));
 	    }
 
-	    this.top = rules.get(top);
-	    if (this.top == null) {
-		throw new IOException("Invalid top: "+top);
+	    if (obj.has("top")) {
+		String top = obj.getString("top");
+		this.top = rules.get(top);
+		if (this.top == null) {
+		    throw new IOException("Invalid top: "+top);
+		}
 	    }
 
 	    // Next, instantiate the details
@@ -44,7 +46,7 @@ public class RuleEngine {
 		try {
 		    rule.condition = ExpressionParser.parse(str, factory);
 		} catch (Throwable t) {
-		    throw new IOException("Cannot parse condition for "+tag+":: "+str);
+		    throw new IOException("Cannot parse condition for "+tag+": "+str);
 		}
 		if (rule.condition == null) {
 		    throw new IOException("Invalid condition for "+tag+": "+str);
@@ -91,6 +93,11 @@ public class RuleEngine {
 	return true;
     }
     public void evaluate(RuleContext context) {
+	if (top == null)
+	    throw new RuntimeException("Rule has not explicit top");
 	top.evaluate(context);
+    }
+    public Rule getRule(String tag) {
+	return rules.get(tag);
     }
 }
