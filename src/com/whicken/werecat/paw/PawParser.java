@@ -12,7 +12,7 @@ public class PawParser<T> {
     public PawParser(Class c) {
 	factory = new PawFactory(c);
     }
-    PawExpression<T> parse(String expr) {
+    public PawExpression<T> parse(String expr) {
 	try {
 	    Expression e = ExpressionParser.parse(expr, factory);
 	    if (e != null)
