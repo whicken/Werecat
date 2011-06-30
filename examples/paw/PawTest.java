@@ -22,8 +22,8 @@ public class PawTest {
 
 	PawParser<Artist> parser = new PawParser(Artist.class);
 	// PawExpression<Artist> expr = parser.parse("age == 20");
-	PawExpression<Artist> expr = parser.parse("first == 'B'");
-	System.out.println(c+" "+i);
+	// PawExpression<Artist> expr = parser.parse("first == 'B'");
+	PawExpression<Artist> expr = parser.parse("name =~ /o/");
 	for (Artist a : artists) {
 	    Object o = expr.getValue(a);
 	    System.out.println(a.name+": "+o);

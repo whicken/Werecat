@@ -66,6 +66,8 @@ eqExpr returns [Expression value]
       ( '=' rhs=relExpr { $value=new EqualExpression($value, $rhs.value); }
       | '==' rhs=relExpr { $value=new EqualExpression($value, $rhs.value); }
       | '!=' rhs=relExpr { $value=new NEExpression($value, $rhs.value); }
+      | '=~' rhs=relExpr { $value=new RegexpMatchExpression($value, $rhs.value); }
+      | '!~' rhs=relExpr { $value=new RegexpNoMatchExpression($value, $rhs.value); }
       )*
     ;
 
@@ -98,6 +100,7 @@ factor returns [Expression value]
     | n3=value { $value = $n3.value; }
     | n4=STRINGLITERAL { $value = new StringConstant($n4.text); }
     | n5=CHARLITERAL { $value = new NumberConstant($n5.text.charAt(1)); }
+    | n6=REGEXPLITERAL { $value = new RegexpConstant($n6.text); }
     | TRUE { $value = new NumberConstant(1); }
     | FALSE { $value = new NumberConstant(0); }
     | NULL { $value = new StringConstant(null); }
@@ -146,6 +149,14 @@ STRINGLITERAL
         |   ~( '\\' | '"' | '\r' | '\n' )
         )*
         '"'
+    ;
+
+REGEXPLITERAL
+    :   '/'
+        (   EscapeSequence
+        |   ~( '\\' | '"' | '\r' | '\n' )
+        )*
+        '/'
     ;
 
 
