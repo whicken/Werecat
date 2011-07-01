@@ -15,6 +15,7 @@ public class RuleFactory {
     }
     protected Method getMethod(String method) {
 	try {
+	    // TODO: Require the method to be public
 	    return context.getDeclaredMethod(method, (Class[]) null);
 	} catch (NoSuchMethodException e) {
 	    // Not an error

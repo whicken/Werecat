@@ -36,7 +36,7 @@ public class Rule {
     public void evaluate(RuleContext context) {
 	try {
 	    Object o = condition.getValue(context);
-	    System.out.println(description+": "+o);
+	    // For debugging: System.out.println(description+": "+o);
 	    if (Expression.asBoolean(o)) {
 		if (acceptMethod != null)
 		    acceptMethod.invoke(context, (Object[]) null);
