@@ -17,8 +17,10 @@ public class NEExpression extends BinaryExpression {
 	    return Boolean.TRUE;
 	}
 	if (l instanceof String || r instanceof String) {
-	    return new Boolean(!asString(l).equals(asString(r)));
+	    return asString(l).equals(asString(r)) ?
+		Boolean.FALSE : Boolean.TRUE;
 	}
-	return new Boolean(asDouble(l) != asDouble(r));
+	return asDouble(l) != asDouble(r) ?
+	    Boolean.TRUE : Boolean.FALSE;
     }
 }

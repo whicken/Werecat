@@ -7,6 +7,7 @@ public class GTExpression extends BinaryExpression {
 	super(lhs, rhs);
     }
     public Object getValue(RuleContext context) {
-	return new Boolean(lhs.getDouble(context) > rhs.getDouble(context));
+	return lhs.getDouble(context) > rhs.getDouble(context) ?
+	    Boolean.TRUE : Boolean.FALSE;
     }
 }

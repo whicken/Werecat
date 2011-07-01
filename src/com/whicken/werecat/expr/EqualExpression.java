@@ -17,8 +17,10 @@ public class EqualExpression extends BinaryExpression {
 	    return Boolean.FALSE;
 	}
 	if (l instanceof String || r instanceof String) {
-	    return new Boolean(asString(l).equals(asString(r)));
+	    return asString(l).equals(asString(r)) ?
+		Boolean.TRUE : Boolean.FALSE;
 	}
-	return new Boolean(asDouble(l) == asDouble(r));
+	return asDouble(l) == asDouble(r) ?
+	    Boolean.TRUE : Boolean.FALSE;
     }
 }

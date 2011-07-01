@@ -26,7 +26,7 @@ public class RegexpNoMatchExpression extends BinaryExpression {
 		pattern = Pattern.compile(asString(r));
 	    }
 	    Matcher m = pattern.matcher(asString(l));
-	    return new Boolean(!m.find());
+	    return m.find() ? Boolean.FALSE : Boolean.TRUE;
 	}
 	throw new RuntimeException("Unsupported types in !~");
     }
