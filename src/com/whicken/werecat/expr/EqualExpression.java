@@ -16,11 +16,8 @@ public class EqualExpression extends BinaryExpression {
 	} else if (r == null) {
 	    return Boolean.FALSE;
 	}
-	if (l instanceof String || r instanceof String) {
-	    return asString(l).equals(asString(r)) ?
-		Boolean.TRUE : Boolean.FALSE;
-	}
-	return asDouble(l) == asDouble(r) ?
-	    Boolean.TRUE : Boolean.FALSE;
+	if (isNumber(l) || isNumber(r))
+	    return asDouble(l) == asDouble(r) ? Boolean.TRUE : Boolean.FALSE;
+	return asString(l).equals(asString(r)) ? Boolean.TRUE : Boolean.FALSE;
     }
 }

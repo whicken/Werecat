@@ -16,11 +16,10 @@ public class NEExpression extends BinaryExpression {
 	} else if (r == null) {
 	    return Boolean.TRUE;
 	}
-	if (l instanceof String || r instanceof String) {
-	    return asString(l).equals(asString(r)) ?
-		Boolean.FALSE : Boolean.TRUE;
-	}
-	return asDouble(l) != asDouble(r) ?
-	    Boolean.TRUE : Boolean.FALSE;
+	if (isNumber(l) || isNumber(r))
+	    return asDouble(l) != asDouble(r) ?
+		Boolean.TRUE : Boolean.FALSE;
+	return asString(l).equals(asString(r)) ?
+	    Boolean.FALSE : Boolean.TRUE;
     }
 }
