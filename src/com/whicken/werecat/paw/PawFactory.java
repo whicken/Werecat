@@ -13,7 +13,13 @@ class PawFactory extends RuleFactory {
 	super(context);
     }
     public Expression createExpression(String key) {
-	// First, use reflection to see if the context has an accessor
+	try {
+	    Field field = context.getDeclaredField(key);
+	    if ((field.getModifiers() & Modifier.PUBLIC) != 0)
+		return new PawField(field);
+	} catch (NoSuchFieldException e) {
+	}
+
 	String method;
 	if (Character.isLowerCase(key.charAt(0))) {
 	    char c = Character.toUpperCase(key.charAt(0));

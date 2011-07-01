@@ -3,6 +3,7 @@ grammar Expression;
 tokens {
     PLUS = '+' ;
     MINUS= '-' ;
+    MOD= '%' ;
     MULT= '*' ;
     DIV= '/' ;
     OPEN= '(' ;
@@ -32,7 +33,7 @@ import com.whicken.werecat.expr.*;
         CommonTokenStream tokens = new CommonTokenStream(lex);
         ExpressionParser parser = new ExpressionParser(tokens);
         parser.factory = factory;
-        return parser.expr();
+        return parser.top();
     }
     public static void main(String[] args) throws Exception {
         ExpressionLexer lex = new ExpressionLexer(new ANTLRFileStream(args[0]));
@@ -41,7 +42,7 @@ import com.whicken.werecat.expr.*;
         ExpressionParser parser = new ExpressionParser(tokens);
 
         try {
-            Expression e = parser.expr();
+            Expression e = parser.top();
             System.out.println("Got: "+e);
             double d = e.asDouble(null);
             System.out.println("="+d);
@@ -57,8 +58,26 @@ import com.whicken.werecat.expr.*;
 
 // Top of the tree
 
+top returns [Expression value]
+    : v=expr { $value = $v.value; }
+    ;
+
 expr returns [Expression value]
     : v=orExpr { $value = $v.value; }
+    ;
+
+parExpr returns [Expression value]
+    : '(' v=expr { $value = $v.value; } ')'
+    ;
+
+/* TODO */
+arguments
+    : '(' (exprList )? ')'
+    ;
+
+exprList returns [Expression value]
+    : lhs=expr { $value = $lhs.value; }
+        ( ',' rhs=expr { /* TODO */ } )*
     ;
 
 orExpr returns [Expression value]
@@ -105,22 +124,38 @@ addExpr returns [Expression value]
     ;
 
 mulExpr returns [Expression value]
-    : lhs=factor { $value = $lhs.value; }
-      ( MULT rhs=factor { $value = new MultExpression($value, $rhs.value); }
-      | DIV rhs=factor { $value = new DivExpression($value, $rhs.value); }
+    : lhs=unaryExpr { $value = $lhs.value; }
+      ( MULT rhs=unaryExpr { $value = new MultExpression($value, $rhs.value); }
+      | DIV rhs=unaryExpr { $value = new DivExpression($value, $rhs.value); }
+      | MOD rhs=unaryExpr { $value = new ModExpression($value, $rhs.value); }
       )*
     ;
 
+unaryExpr returns [Expression value]
+    :
+    '+' v=unaryExpr { $value = $v.value; }
+    | '-' v=unaryExpr { $value = new NegateExpression($v.value); }
+    | v=unaryExprOther { $value = $v.value; }
+    ;
+
+unaryExprOther returns [Expression value]
+    :
+    '!' v=unaryExpr { $value = new NotExpression($v.value); }
+    | v=factor { $value = $v.value; }
+        (rhs=selector { $value = factory.createCompoundExpression($value, $rhs.value); } )*
+    ;
+
 factor returns [Expression value]
-    : n=NUMBER { $value = new NumberConstant(Double.parseDouble($n.text)); }
+    : n=NUMBER { $value = new SimpleConstant(new Integer($n.text)); }
     | n2=method { $value = $n2.value; }
-    | n3=value { $value = $n3.value; }
-    | n4=STRINGLITERAL { $value = new StringConstant($n4.text); }
-    | n5=CHARLITERAL { $value = new NumberConstant($n5.text.charAt(1)); }
-    | n6=REGEXPLITERAL { $value = new RegexpConstant($n6.text); }
-    | TRUE { $value = new NumberConstant(1); }
-    | FALSE { $value = new NumberConstant(0); }
-    | NULL { $value = new StringConstant(null); }
+    | n2=value { $value = $n2.value; }
+    | n=STRINGLITERAL { $value = new SimpleConstant($n.text); }
+    | n=CHARLITERAL { $value = new SimpleConstant(new Character($n.text.charAt(1))); }
+    | n=REGEXPLITERAL { $value = new RegexpConstant($n.text); }
+    | n2=parExpr { $value = $n2.value; }
+    | TRUE { $value = new SimpleConstant(Boolean.TRUE); }
+    | FALSE { $value = new SimpleConstant(Boolean.FALSE); }
+    | NULL { $value = new SimpleConstant(null); }
     ;
 
 method returns [Expression value]
@@ -129,10 +164,14 @@ method returns [Expression value]
     ;
 
 
-
 value returns [Expression value]
     : n=IDENTIFIER { $value = factory.createExpression($n.text);
         if ($value == null) throw new RuntimeException("Unknown value: "+$n.text); }
+    ;
+
+selector returns [Object value]
+    : '.' n=IDENTIFIER { $value = $n.text; }
+    | '[' e=expr ']' { $value = $e.value; }
     ;
 
 
