@@ -7,6 +7,7 @@ public class GTExpression extends BinaryExpression {
 	super(lhs, rhs);
     }
     public Object getValue(RuleContext context) {
+	// FR: If either side is not a number, do string comparison
 	return lhs.getDouble(context) > rhs.getDouble(context) ?
 	    Boolean.TRUE : Boolean.FALSE;
     }

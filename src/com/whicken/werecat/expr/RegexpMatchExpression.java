@@ -12,8 +12,6 @@ public class RegexpMatchExpression extends BinaryExpression {
 	Object l = lhs.getValue(context);
 	Object r = rhs.getValue(context);
 	if (l == null) {
-	    if (r == null)
-		return Boolean.TRUE;
 	    return Boolean.FALSE;
 	} else if (r == null) {
 	    return Boolean.FALSE;
