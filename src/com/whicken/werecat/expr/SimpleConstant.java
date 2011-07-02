@@ -10,4 +10,11 @@ public class SimpleConstant extends Expression {
     public Object getValue(RuleContext context) {
 	return value;
     }
+    public String toString() {
+	if (value == null)
+	    return "null";
+	if (value instanceof String)
+	    return "\""+value.toString()+"\"";
+	return value.toString();
+    }
 }

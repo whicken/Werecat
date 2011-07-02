@@ -18,4 +18,7 @@ public class FieldExpression extends Expression {
 	    throw new RuntimeException(t.getMessage());
 	}
     }
+    public String toString() {
+	return field.getName();
+    }
 }
