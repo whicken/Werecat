@@ -1,0 +1,68 @@
+<html>
+<head>
+<title>Werecat Rules</title>
+</head>
+<body>
+<h1>Werecat Rules</h1>
+
+<p>Werecat supports the following JSON format for defining rules.</p>
+
+<pre>
+{
+  &quot;top&quot; &quot;top node tag&quot;
+  &quot;version&quot; &quot;0.0&quot;
+  &quot;rules&quot; {
+    ...
+  }
+}
+</pre>
+
+<p><b>top</b> is the default entry point for the rules engine.  This is optional, but if it's not specified, you may not call the evaluate method in RuleEngine (instead, call getRule, and use the evaluate method of the rule you instead to start with).</p>
+
+<p><b>version</b> is for your own versioning (optional).</p>
+
+<p><b>rules</b> is the list of rules (required).</p>
+
+<p>Each rule should following the format below:</p>
+
+<pre>
+    &quot;tag&quot; {
+        &quot;description&quot; &quot;Some notes&quot;
+        &quot;condition&quot; &quot;value != null&quot;
+        &quot;accept&quot; &quot;actionlist&quot;
+        &quot;decline&quot; &quot;actionlist&quot;
+    },
+</pre>
+
+<p>Each rule must be associated with a unique <b>tag</b>.  This should
+generally look like an identifier, but the only real rule is that it
+cannot contain parentheses.</p>
+
+<p><b>description</b> is for your own use (optional).</p>
+
+<p><b>condition</b> is an <a href="expr.html">expression</a>
+(required).  If you have no need for conditional logic, you may use
+the constant <b>true</b> for the expression.</p>
+
+<p><b>accept</b> is the list of actions to take when the condition is true (optional).</p>
+
+<p><b>decline</b> is the list of actions to take when the condition is false (optional).</p>
+
+<p>The action list is be a comma separated list of actions, which fall
+into one of two types.  You may have zero or one tags, and zero or
+more calls.</p>
+
+<p><b>tag</b> An action may contain a single tag.  If this tag is
+present, then all other actions will be evaluated first, then the rule
+engine will proceed to the named rule. If no tag is present in the
+action list, rule evaluation will stop with this rule.</p>
+
+<p><b>call</b> An action may contain any number of calls. Each call
+may pass parameters and use expressions, but any arguments must be of
+the correct type to call the name function. If multiple calls are
+present, they will be evaluated in the order specified.  All calls are
+evaluated before the next tag is visited, regardless of the order of
+calls and tags.</p>
+
+</body>
+</html>
