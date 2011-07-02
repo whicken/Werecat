@@ -16,8 +16,23 @@ public class EqualExpression extends BinaryExpression {
 	} else if (r == null) {
 	    return Boolean.FALSE;
 	}
-	if (isNumber(l) || isNumber(r))
-	    return asDouble(l) == asDouble(r) ? Boolean.TRUE : Boolean.FALSE;
+	if (isNumber(l)) {
+	    if (isNumber(r))
+		return asDouble(l) == asDouble(r) ? Boolean.TRUE : Boolean.FALSE;
+	    String rstr = asString(r);
+	    if (isStringNumber(rstr)) {
+		double d = Double.parseDouble(rstr);
+		return asDouble(l) == d ? Boolean.TRUE : Boolean.FALSE;
+	    }
+	    return Boolean.FALSE;
+	} else if (isNumber(r)) {
+	    String lstr = asString(l);
+	    if (isStringNumber(lstr)) {
+		double d = Double.parseDouble(lstr);
+		return d == asDouble(r) ? Boolean.TRUE : Boolean.FALSE;
+	    }
+	    return Boolean.FALSE;
+	}
 	return asString(l).equals(asString(r)) ? Boolean.TRUE : Boolean.FALSE;
     }
 }

@@ -47,4 +47,20 @@ public abstract class Expression {
 	    o instanceof Character ||
 	    o instanceof Boolean;
     }
+    static boolean isStringNumber(String s) {
+	if (s == null || s.length() == 0)
+	    return false;
+	boolean dot = false;
+	for (int i = 0; i < s.length(); ++i) {
+	    if (s.charAt(i) == '.') {
+		if (dot)
+		    return false;
+		dot = true;
+	    } else if (Character.isDigit(s.charAt(i))) {
+	    } else {
+		return false;
+	    }
+	}
+	return true;
+    }
 }
