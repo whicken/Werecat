@@ -45,4 +45,11 @@ public class DotExpression extends UnaryExpression {
 	}
 	throw new RuntimeException("Cannot resolve "+field);
     }
+    public String toString() {
+	StringBuffer b = new StringBuffer();
+	b.append(expr.toString());
+	b.append(".");
+	b.append(field);
+	return b.toString();
+    }
 }

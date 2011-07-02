@@ -10,4 +10,11 @@ public class GTExpression extends BinaryExpression {
 	return lhs.getDouble(context) > rhs.getDouble(context) ?
 	    Boolean.TRUE : Boolean.FALSE;
     }
+    public String toString() {
+	StringBuffer b = new StringBuffer();
+	b.append(lhs.toString());
+	b.append(" > ");
+	b.append(rhs.toString());
+	return b.toString();
+    }
 }

@@ -10,4 +10,11 @@ public class ModExpression extends BinaryExpression {
 	return new Double(((long) lhs.getDouble(context))%
 			  ((long) rhs.getDouble(context)));
     }
+    public String toString() {
+	StringBuffer b = new StringBuffer();
+	b.append(lhs.toString());
+	b.append(" % ");
+	b.append(rhs.toString());
+	return b.toString();
+    }
 }

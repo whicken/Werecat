@@ -13,4 +13,11 @@ public class AndExpression extends BinaryExpression {
 	else
 	    return Boolean.FALSE;
     }
+    public String toString() {
+	StringBuffer b = new StringBuffer();
+	b.append(lhs.toString());
+	b.append(" and ");
+	b.append(rhs.toString());
+	return b.toString();
+    }
 }

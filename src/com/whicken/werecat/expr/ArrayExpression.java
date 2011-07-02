@@ -27,4 +27,12 @@ public class ArrayExpression extends BinaryExpression {
 	}
 	throw new RuntimeException("Unable to index: "+l.getClass());
     }
+    public String toString() {
+	StringBuffer b = new StringBuffer();
+	b.append(lhs.toString());
+	b.append("[");
+	b.append(rhs.toString());
+	b.append("]");
+	return b.toString();
+    }
 }

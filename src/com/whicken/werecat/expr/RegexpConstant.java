@@ -11,4 +11,7 @@ public class RegexpConstant extends Expression {
     public Object getValue(RuleContext context) {
 	return pattern;
     }
+    public String toString() {
+	return "/"+pattern+"/";
+    }
 }

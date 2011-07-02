@@ -9,4 +9,7 @@ public class NegateExpression extends UnaryExpression {
     public Object getValue(RuleContext context) {
 	return new Double(-expr.getDouble(context));
     }
+    public String toString() {
+	return "-"+expr.toString();
+    }
 }
