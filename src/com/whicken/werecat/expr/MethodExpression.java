@@ -2,18 +2,35 @@ package com.whicken.werecat.expr;
 
 import com.whicken.werecat.RuleContext;
 import java.lang.reflect.*;
+import java.util.List;
 
 /**
  * Call a simple method in the RuleContext class via reflection
  */
 public class MethodExpression extends Expression {
-    Method method;
-    public MethodExpression(Method method) {
+    protected Method method;
+    protected Expression[] args;
+    public MethodExpression(Method method, List<Expression> args) {
 	this.method = method;
+	if (args == null || args.size() == 0) {
+	    this.args = null;
+	} else {
+	    this.args = new Expression[args.size()];
+	    for (int i = 0; i < args.size(); ++i)
+		this.args[i] = args.get(i);
+	}
     }
     public Object getValue(RuleContext context) {
 	try {
-	    return method.invoke(context, (Object[])null);
+	    Object[] a;
+	    if (args == null) {
+		a = null;
+	    } else {
+		a = new Object[args.length];
+		for (int i = 0; i < args.length; ++i)
+		    a[i] = args[i].getValue(context);
+	    }
+	    return method.invoke(context, a);
 	} catch (Throwable t) {
 	    throw new RuntimeException(t.getMessage());
 	}

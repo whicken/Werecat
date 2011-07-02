@@ -6,6 +6,7 @@ import com.whicken.werecat.expr.DotExpression;
 import com.whicken.werecat.expr.FieldExpression;
 import com.whicken.werecat.expr.MethodExpression;
 import java.lang.reflect.*;
+import java.util.List;
 
 /**
  * Helper class for instantiating a RuleEngine.  Subclass to provide
@@ -19,11 +20,25 @@ public class RuleFactory {
     /**
      * Requires the method to be public
      */
-    protected Method getMethod(String method) {
+    protected Method getMethod(String method, List<Expression> args) {
 	try {
-	    Method m = context.getDeclaredMethod(method, (Class[]) null);
-	    if ((m.getModifiers() & Modifier.PUBLIC) != 0)
-		return m;
+	    if (args == null) {
+		Method m = context.getDeclaredMethod(method, (Class[]) null);
+		if ((m.getModifiers() & Modifier.PUBLIC) != 0)
+		    return m;
+	    } else {
+		// More work here, since we don't have types
+		Method[] list = context.getDeclaredMethods();
+		for (Method m : list) {
+		    if ((m.getModifiers() & Modifier.PUBLIC) == 0)
+			continue;
+		    if (!m.getName().equals(method))
+			continue;
+		    Class[] p = m.getParameterTypes();
+		    if (p.length == args.size())
+			return m;
+		}
+	    }
 	} catch (NoSuchMethodException e) {
 	    // Not an error
 	}
@@ -32,7 +47,7 @@ public class RuleFactory {
     /**
      * Override this is you want something different than reflection.
      */
-    public Expression createExpression(String key) {
+    public Expression createField(String key) {
 	try {
 	    Field field = context.getDeclaredField(key);
 	    if ((field.getModifiers() & Modifier.PUBLIC) != 0)
@@ -47,18 +62,18 @@ public class RuleFactory {
 	} else {
 	    method = "get"+key;
 	}
-	Method m = getMethod(method);
+	Method m = getMethod(method, null);
 	if (m != null)
-	    return new MethodExpression(m);
+	    return new MethodExpression(m, null);
 	return null;
     }
     /**
      * Override this is you want something different than reflection.
      */
-    public Expression createMethod(String method) {
-	Method m = getMethod(method);
+    public Expression createMethod(String method, List<Expression> args) {
+	Method m = getMethod(method, args);
 	if (m != null)
-	    return new MethodExpression(m);
+	    return new MethodExpression(m, args);
 	return null;
     }
     public Expression createCompoundExpression(Expression lhs, Object rhs) {

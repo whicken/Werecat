@@ -55,11 +55,12 @@ public class RuleEngine {
 		    rule.description = o.getString("description");
 
 		if (o.has("accept")) {
+		    // TODO: Support multiple actions, more complex
 		    String accept = o.getString("accept");
 		    String[] actions = accept.split(",");
 		    for (String s : actions) {
 			if (s.endsWith("()")) {
-			    rule.acceptMethod = factory.getMethod(s.substring(0, s.length()-2));
+			    rule.acceptMethod = factory.getMethod(s.substring(0, s.length()-2), null);
 			    if (rule.acceptMethod == null)
 				throw new IOException("Invalid method: "+s);
 			    
@@ -75,7 +76,7 @@ public class RuleEngine {
 		    String[] actions = decline.split(",");
 		    for (String s : actions) {
 			if (s.endsWith("()")) {
-			    rule.declineMethod = factory.getMethod(s.substring(0, s.length()-2));
+			    rule.declineMethod = factory.getMethod(s.substring(0, s.length()-2), null);
 			    if (rule.declineMethod == null)
 				throw new IOException("Invalid method: "+s);
 			    

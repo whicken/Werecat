@@ -70,14 +70,15 @@ parExpr returns [Expression value]
     : '(' v=expr { $value = $v.value; } ')'
     ;
 
-/* TODO */
-arguments
-    : '(' (exprList )? ')'
+arguments returns [List<Expression> value]
+    : '(' (n=exprList { $value = $n.value; } )? ')'
     ;
 
-exprList returns [Expression value]
-    : lhs=expr { $value = $lhs.value; }
-        ( ',' rhs=expr { /* TODO */ } )*
+exprList returns [List<Expression> value]
+    : lhs=expr {
+         $value = new ArrayList<Expression>();
+         $value.add($lhs.value); }
+        ( ',' rhs=expr { $value.add($rhs.value); } )*
     ;
 
 orExpr returns [Expression value]
@@ -147,8 +148,7 @@ unaryExprOther returns [Expression value]
 
 factor returns [Expression value]
     : n=NUMBER { $value = new SimpleConstant(new Integer($n.text)); }
-    | n2=method { $value = $n2.value; }
-    | n2=value { $value = $n2.value; }
+    | n2=reference { $value = $n2.value; }
     | n=STRINGLITERAL { $value = new SimpleConstant($n.text.substring(1, $n.text.length()-1)); }
     | n=CHARLITERAL { $value = new SimpleConstant(new Character($n.text.charAt(1))); }
     | n=REGEXPLITERAL { $value = new RegexpConstant($n.text); }
@@ -158,17 +158,21 @@ factor returns [Expression value]
     | NULL { $value = new SimpleConstant(null); }
     ;
 
-method returns [Expression value]
-    : n=IDENTIFIER OPEN CLOSE { $value = factory.createMethod($n.text);
-                                if ($value == null) throw new RuntimeException("Unknown method: "+$n.text); }
+reference returns [Expression value]
+    : n=IDENTIFIER { boolean field = true; }
+      ( a=arguments { field = false; } )? 
+    { 
+        if (field) {
+            $value = factory.createField($n.text);
+            if ($value == null) throw new RuntimeException("Unknown field: "+$n.text); 
+        } else {
+            $value = factory.createMethod($n.text, $a.value);
+            if ($value == null) throw new RuntimeException("Unknown method: "+$n.text); 
+        }
+    }
     ;
 
-
-value returns [Expression value]
-    : n=IDENTIFIER { $value = factory.createExpression($n.text);
-        if ($value == null) throw new RuntimeException("Unknown value: "+$n.text); }
-    ;
-
+// TODO: Add (arguments)? to IDENTIFIER case
 selector returns [Object value]
     : '.' n=IDENTIFIER { $value = $n.text; }
     | '[' e=expr ']' { $value = $e.value; }
