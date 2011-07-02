@@ -149,7 +149,7 @@ factor returns [Expression value]
     : n=NUMBER { $value = new SimpleConstant(new Integer($n.text)); }
     | n2=method { $value = $n2.value; }
     | n2=value { $value = $n2.value; }
-    | n=STRINGLITERAL { $value = new SimpleConstant($n.text); }
+    | n=STRINGLITERAL { $value = new SimpleConstant($n.text.substring(1, $n.text.length()-1)); }
     | n=CHARLITERAL { $value = new SimpleConstant(new Character($n.text.charAt(1))); }
     | n=REGEXPLITERAL { $value = new RegexpConstant($n.text); }
     | n2=parExpr { $value = $n2.value; }
