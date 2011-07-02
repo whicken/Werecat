@@ -8,9 +8,9 @@ public class Rule {
     String tag;
     String description;
     Expression condition;
-    Method acceptMethod;
+    Expression[] acceptList;
     Rule accept;
-    Method declineMethod;
+    Expression[] declineList;
     Rule decline;
     public Rule(String tag) {
 	this.tag = tag;
@@ -38,21 +38,19 @@ public class Rule {
 	    Object o = condition.getValue(context);
 	    // For debugging: System.out.println(description+": "+o);
 	    if (Expression.asBoolean(o)) {
-		if (acceptMethod != null)
-		    acceptMethod.invoke(context, (Object[]) null);
+		if (acceptList != null)
+		    for (Expression e : acceptList)
+			e.getValue(context);
 		if (accept != null)
 		    accept.evaluate(context);
 	    } else {
-		if (declineMethod != null)
-		    declineMethod.invoke(context, (Object[]) null);
+		if (declineList != null)
+		    for (Expression e : declineList)
+			e.getValue(context);
 		if (decline != null)
 		    decline.evaluate(context);
 	    }
-	} catch (IllegalAccessException e) {
-	    throw new RuntimeException(description+": "+e.getMessage(), e);
-	} catch (IllegalArgumentException e) {
-	    throw new RuntimeException(description+": "+e.getMessage(), e);
-	} catch (InvocationTargetException e) {
+	} catch (Throwable e) {
 	    throw new RuntimeException(description+": "+e.getMessage(), e);
 	}
     }
