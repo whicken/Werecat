@@ -1,0 +1,43 @@
+<html>
+<head>
+<title>Werecat Expressions</title>
+</head>
+<body>
+<h1>Werecat Expressions</h1>
+
+<p>Werecat supports the following syntax in expressions.</p>
+
+<table>
+<thead>
+<td>Operator</td><td>Description</td>
+</thead>
+<tr><td>!x</td><td>Boolean not</td></tr>
+<tr><td>+x, -x</td><td>Numerical +/-</td></tr>
+<tr><td>a*b, a/b, a%b</td><td>Multiply, divide, integer mod</td></tr>
+<tr><td>a+b, a-b</td><td>Numeric add, substract</td></tr>
+<tr><td>a&lt;b, a &lt;= b, a &gt; b, a &gt;= b</td><td>Numeric comparison</td></tr>
+<tr><td>a=b, a == b, a != b</td><td>Equality checks (numeric if possible, string otherwise)</td></tr>
+<tr><td>a =~ b</td><td>b must be a regexpr of form /pattern/. Evaluates to index of first match, or false</td></tr>
+<tr><td>a !~ b</td><td>b must be a regexpr of form /pattern/. True if a does not match b</td></tr>
+<tr><td>a && b, a and b</td><td>Boolean and</td></tr>
+<tr><td>a || b, a or b</td><td>Boolean or</td></tr>
+<tr><td>a.identifier</td><td>Field deference</td></tr>
+<tr><td>a[b]</td><td>Array index, Map lookup, or Set contains. B must be a valid type for the operation.</td></tr>
+<tr><td>a(b,c,...)</td><td>Function calls, method must be public.</tr>
+</table>
+
+<p>Werecat supports the following literals.</p>
+
+<table>
+<thead>
+<td>Literal</td><td>Examples</td>
+</thead>
+<tr><td>Numbers</td><td>1, 3, .02, 0.2</td></tr>
+<tr><td>Characters</td><td>'a'</td></tr>
+<tr><td>Strings</td><td>&quot;foo&quot;</td></tr>
+<tr><td>Regexp</td><td>/pattern/</td></tr>
+<tr><td>Constants</td><td>true, false, null</td></tr>
+</table>
+
+</body>
+</html>
