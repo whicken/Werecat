@@ -51,7 +51,8 @@ public class RuleEngine {
 		if (rule.condition == null) {
 		    throw new IOException("Invalid condition for "+tag+": "+str);
 		}
-		rule.description = o.getString("description");
+		if (o.has("description"))
+		    rule.description = o.getString("description");
 
 		if (o.has("accept")) {
 		    String accept = o.getString("accept");

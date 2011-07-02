@@ -49,11 +49,11 @@ public class Rule {
 		    decline.evaluate(context);
 	    }
 	} catch (IllegalAccessException e) {
-	    throw new RuntimeException(e.getMessage());
+	    throw new RuntimeException(description+": "+e.getMessage(), e);
 	} catch (IllegalArgumentException e) {
-	    throw new RuntimeException(e.getMessage());
+	    throw new RuntimeException(description+": "+e.getMessage(), e);
 	} catch (InvocationTargetException e) {
-	    throw new RuntimeException(e.getMessage());
+	    throw new RuntimeException(description+": "+e.getMessage(), e);
 	}
     }
 }
