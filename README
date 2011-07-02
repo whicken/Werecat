@@ -1,2 +1,6 @@
 See the doc folder for information and examples.  There is no clean
 build procedure for this project yet.
+
+To update javadocs:
+
+javadoc com.whicken.werecat com.whicken.werecat.paw -d doc/javadoc
