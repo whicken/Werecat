@@ -1,0 +1,137 @@
+<html>
+<head>
+<title>Werecat Introduction</title>
+</head>
+<body>
+<h1>Werecat Introduction</h1>
+
+<p>The Werecat Rules Engine is a freely available framework for
+building and evaluating simple, hierarchical rule structures.  Using
+Java reflection, you can easily plug in your own data and functions to
+create a highly dynamic rules-based structure with very little coding
+effort. The rest of this document describes how to use the framework
+for your own projects.</p>
+
+<p><b>Sample Rules</b></p>
+
+<p>The rules format is simple JSON, which looks like this:
+<pre>
+{
+  "top": "testOverride",
+  "version": "0.0",
+  "rules": {
+    "testOverride": {
+        "description": "Check for override",
+        "condition": "setting != null",
+        "accept": "doOverride",
+        "decline": "testLocation"
+    },
+    "testLocation": {
+        "description": "Check if location is present",
+        "condition": "location != null",
+        "accept": "useLocation",
+        "decline": "doNothing()",
+    },
+    ...
+</pre></p>
+
+<p>The core structure is a list of tagged rules.  The outer "top" tag
+identifies the default entry point for evaluating rules, and the
+"version" tag is merely for tracking changes.  Each rule element has a
+name, used to reference the tree, and four attributes:
+
+<ul>
+<li>description Documentation on the purpose of the rule
+<li>condition A Boolean expression evaluated for each rule
+<li>accept Actions to take when a condition is true
+<li>decline Actions to take when a condition is false
+</ul>
+</p>
+
+<p>The condition is similar to an expression in C++, Java, or other
+programming languages, and may use all the similar operators
+(+,-,*,/,>,<, etc).  You can work with both numbers and strings,
+including regular expression matching.  Pseudo variables can be
+attached to your own data objects as described in the next
+section.</p>
+
+<p>Actions (accept or decline), can consist of two components:
+
+<ul>
+<li>tag Identify the next rule to evaluate.  A tag must match the tag of a defined rule.
+<li>method Call a function in your own code.  The method must match a function you have defined, and indicated in the rule with ().
+</ul></po>
+
+<p>
+If you are using only one of the actions, simply include that action.
+If you are using both,separate them by commas.  (You may also omit the
+action entirely if not needed). A fully loaded action might look like
+this:</p>
+
+<pre>
+"action": "myMethod(),nextTag"
+</pre>
+
+<p>Typically, the method will be used to update status in your Context
+object, as explained in the next section.</p>
+
+<p><b>Sample Code</b></p>
+
+<p>The most important class when using the Rule Engine is the
+RuleContext.  Each time you evaluate a Rule, you should create a
+RuleContext that stores all the inputs needed in the rule engine, and
+has the ability to store any outputs you want.  You should subclass
+RuleContext to add your own fields and methods, like this:</p>
+
+<pre>
+public class ExampleContext extends RuleContext {
+    // Inputs
+    int level; // Some sample value
+
+    // Results
+    int action = 0;
+
+    // Getter
+    public int getLevel() {
+	return level;
+    }
+    // Action
+    public void setBasicAction() {
+	action = 1;
+    }
+}
+</pre>
+
+<p>Because there is a method call getLevel, you may now use the variable level in your conditions (like "level != 2").</p>
+
+<p>Actions can be any public method of your RuleContext.  You can use
+any information you need from the context, including updating input
+values, or setting outputs.</p>
+
+</p>Using the rule engine itself is very simple.  First, import the package:</p>
+
+<pre>import com.whicken.werecat.*;</pre>
+
+<p>Second, instantiate the engine with some JSON rules as input:</p>
+
+<pre>
+RuleFactory factory = new RuleFactory(ExampleContext.class);
+RuleEngine engine = new RuleEngine();
+engine.load(file, factory);
+</pre>
+
+<p>The RuleContext being used must be passed in via the RuleFactory,
+so that the actions and conditions may be validated during
+instantiation.  To evaluate a rule, create your context, and pass it
+in to the evaluate method.  This will walk the rule structure, calling
+the appropriate actions, and return when completed.</p>
+
+<pre>
+ExampleContext context = new ExampleContext();
+context.level = 4;
+engine.evaluate(context);
+System.out.println("Result: "+context.action);
+</pre>
+
+</body>
+</html>
