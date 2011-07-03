@@ -15,7 +15,7 @@ public class FieldExpression extends Expression {
 	try {
 	    return field.get(context);
 	} catch (Throwable t) {
-	    throw new RuntimeException(t.getMessage());
+	    throw new RuntimeException(t.getMessage(), t);
 	}
     }
     public String toString() {
