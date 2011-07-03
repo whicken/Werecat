@@ -3,9 +3,11 @@ package com.whicken.werecat;
 import com.whicken.werecat.expr.Expression;
 import com.whicken.werecat.expr.ArrayExpression;
 import com.whicken.werecat.expr.DotExpression;
+import com.whicken.werecat.expr.DotMethodExpression;
 import com.whicken.werecat.expr.FieldExpression;
 import com.whicken.werecat.expr.MethodExpression;
 import com.whicken.werecat.expr.ClassReference;
+import com.whicken.werecat.expr.IdentifierCall;
 import java.lang.reflect.*;
 import java.util.List;
 
@@ -33,7 +35,8 @@ public class RuleFactory {
     /**
      * Requires the method to be public
      */
-    protected Method getMethod(String method, List<Expression> args) {
+    public static Method getMethod(Class context,
+				   String method, List<Expression> args) {
 	try {
 	    if (args == null) {
 		Method m = context.getDeclaredMethod(method, (Class[]) null);
@@ -56,6 +59,9 @@ public class RuleFactory {
 	    // Not an error
 	}
 	return null;
+    }
+    protected Method getMethod(String method, List<Expression> args) {
+	return getMethod(context, method, args);
     }
     /**
      * Override this is you want something different than reflection.
@@ -100,6 +106,11 @@ public class RuleFactory {
 	    // at parse time instead of evaluate time
 	    // lhs.thing
 	    return new DotExpression(lhs, (String) rhs);
+	} else if (rhs instanceof IdentifierCall) {
+	    // TODO: If lhs instanceof ClassReference, resolve all issues
+	    // at parse time instead of evaluate time
+	    IdentifierCall ic = (IdentifierCall) rhs;
+	    return new DotMethodExpression(lhs, ic.name, ic.args);
 	} else if (rhs instanceof Expression) {
 	    // lhs[thing]
 	    return new ArrayExpression(lhs, (Expression) rhs);

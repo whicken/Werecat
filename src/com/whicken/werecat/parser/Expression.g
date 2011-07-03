@@ -172,9 +172,16 @@ reference returns [Expression value]
     }
     ;
 
-// TODO: Add (arguments)? to IDENTIFIER case
 selector returns [Object value]
-    : '.' n=IDENTIFIER { $value = $n.text; }
+    : '.' n=IDENTIFIER { boolean field = true; }
+            ( a=arguments { field = false; } )?
+        {
+            if (field) {
+                $value = $n.text; 
+            } else {
+                $value = new IdentifierCall($n.text, $a.value);
+            }
+        }
     | '[' e=expr ']' { $value = $e.value; }
     ;
 

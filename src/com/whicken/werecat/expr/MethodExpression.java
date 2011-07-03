@@ -32,7 +32,7 @@ public class MethodExpression extends Expression {
 	    }
 	    return method.invoke(context, a);
 	} catch (Throwable t) {
-	    throw new RuntimeException(t.getMessage());
+	    throw new RuntimeException(t.getMessage(), t);
 	}
     }
     public String toString() {

@@ -55,9 +55,10 @@ public class PawParserTest extends TestCase {
 	expr = parser.parse("PawClass.hello");
 	assertEquals("Hello", expr.getValue(null));
 
-	// expr = parser.parse("PawClass.isOdd(1)");
-	// assertEquals(Boolean.TRUE, expr.getValue(null));
-	// expr = parser.parse("PawClass.isOdd(2)");
-	// assertEquals(Boolean.FALSE, expr.getValue(null));
+	expr = parser.parse("PawClass.isOdd(1)");
+	assertEquals(Boolean.TRUE, expr.getValue(null));
+	
+	expr = parser.parse("PawClass.isOdd(2)");
+	assertEquals(Boolean.FALSE, expr.getValue(null));
     }
 }
