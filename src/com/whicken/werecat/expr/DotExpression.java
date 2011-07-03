@@ -14,10 +14,17 @@ public class DotExpression extends UnaryExpression {
 	this.field = field;
     }
     public Object getValue(RuleContext context) {
-	Object l = expr.getValue(context);
-	if (l == null)
-	    throw new RuntimeException("Dereferencing null");
-	Class c = l.getClass();
+	Class c;
+	Object l;
+	if (expr instanceof ClassReference) {
+	    c = ((ClassReference) expr).c;
+	    l = null;
+	} else {
+	    l = expr.getValue(context);
+	    if (l == null)
+		throw new RuntimeException("Dereferencing null");
+	    c = l.getClass();
+	}
 	try {
 	    Field f = c.getDeclaredField(field);
 	    if ((f.getModifiers() & Modifier.PUBLIC) != 0)

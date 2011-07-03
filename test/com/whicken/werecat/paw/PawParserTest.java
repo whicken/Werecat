@@ -46,4 +46,18 @@ public class PawParserTest extends TestCase {
 	assertTrue(expr.expr instanceof PawMethod);
 	assertEquals(4.0, Expression.asDouble(expr.getValue(samples.get(0))));
     }
+    public void testClassReference()
+	throws Exception
+    {
+	PawParser<Sample> parser = new PawParser(Sample.class);
+	PawExpression<Sample> expr;
+
+	expr = parser.parse("PawClass.hello");
+	assertEquals("Hello", expr.getValue(null));
+
+	// expr = parser.parse("PawClass.isOdd(1)");
+	// assertEquals(Boolean.TRUE, expr.getValue(null));
+	// expr = parser.parse("PawClass.isOdd(2)");
+	// assertEquals(Boolean.FALSE, expr.getValue(null));
+    }
 }

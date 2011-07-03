@@ -5,6 +5,7 @@ import com.whicken.werecat.expr.ArrayExpression;
 import com.whicken.werecat.expr.DotExpression;
 import com.whicken.werecat.expr.FieldExpression;
 import com.whicken.werecat.expr.MethodExpression;
+import com.whicken.werecat.expr.ClassReference;
 import java.lang.reflect.*;
 import java.util.List;
 
@@ -16,6 +17,18 @@ public class RuleFactory {
     protected Class context;
     public RuleFactory(Class context) {
 	this.context = context;
+    }
+    // FR: Support "import" type syntax to reference static methods, etc
+    protected Class getClass(String name) {
+	try {
+	    Package p = context.getPackage();
+	    Class c = context.forName(p.getName()+"."+name);
+	    return c;
+	} catch (Throwable e) {
+	    // NoClassDefFoundError
+	    // ClassNotFoundException
+	}
+	return null;
     }
     /**
      * Requires the method to be public
@@ -65,6 +78,11 @@ public class RuleFactory {
 	Method m = getMethod(method, null);
 	if (m != null)
 	    return new MethodExpression(m, null);
+
+	Class c = getClass(key);
+	if (c != null)
+	    return new ClassReference(c);
+
 	return null;
     }
     /**
@@ -78,6 +96,8 @@ public class RuleFactory {
     }
     public Expression createCompoundExpression(Expression lhs, Object rhs) {
 	if (rhs instanceof String) {
+	    // TODO: If lhs instanceof ClassReference, resolve all issues
+	    // at parse time instead of evaluate time
 	    // lhs.thing
 	    return new DotExpression(lhs, (String) rhs);
 	} else if (rhs instanceof Expression) {

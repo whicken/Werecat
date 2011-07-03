@@ -3,6 +3,7 @@ package com.whicken.werecat.paw;
 import com.whicken.werecat.RuleFactory;
 import com.whicken.werecat.expr.Expression;
 import com.whicken.werecat.expr.MethodExpression;
+import com.whicken.werecat.expr.ClassReference;
 import java.lang.reflect.*;
 import java.util.List;
 
@@ -31,6 +32,11 @@ class PawFactory extends RuleFactory {
 	Method m = getMethod(method, null);
 	if (m != null)
 	    return new PawMethod(m, null);
+
+	Class c = getClass(key);
+	if (c != null)
+	    return new ClassReference(c);
+
 	return null;
     }
     public Expression createMethod(String method, List<Expression> args) {
