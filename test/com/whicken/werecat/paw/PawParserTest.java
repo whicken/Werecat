@@ -7,6 +7,7 @@ import junit.framework.*;
 
 public class PawParserTest extends TestCase {
     public static class Sample {
+	public Day day = Day.Wednesday;
 	public String str;
 	Sample(String str) {
 	    this.str = str;
@@ -60,5 +61,21 @@ public class PawParserTest extends TestCase {
 	
 	expr = parser.parse("PawClass.isOdd(2)");
 	assertEquals(Boolean.FALSE, expr.getValue(null));
+    }
+    public void testEnums()
+	throws Exception
+    {
+	PawParser<Sample> parser = new PawParser(Sample.class);
+	PawExpression<Sample> expr;
+	Sample sample = new Sample("a");
+
+	expr = parser.parse("day");
+	assertEquals(Day.Wednesday, expr.getValue(sample));
+
+	expr = parser.parse("day = Day.Monday");
+	assertEquals(Boolean.FALSE, expr.getValue(sample));
+
+	expr = parser.parse("day = Day.Wednesday");
+	assertEquals(Boolean.TRUE, expr.getValue(sample));
     }
 }
