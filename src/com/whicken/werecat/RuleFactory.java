@@ -27,13 +27,16 @@ public class RuleFactory {
 	importedClasses = new TreeMap<String, Class>();
 	importedPackages = new ArrayList<String>();
     }
+    /**
+     * Make the given classes accessible by simple name. You may use
+     * wildcards or explicit paths.
+     */
     public void addImport(String path) {
 	if (path.endsWith(".*")) {
 	    importedPackages.add(path.substring(0, path.length()-1));
 	} else {
 	    try {
-		Class c = Class.forName(path);
-		importedClasses.put(c.getSimpleName(), c);
+		addImport(Class.forName(path));
 	    } catch (Throwable e) {
 		// NoClassDefFoundError
 		// ClassNotFoundException
@@ -41,6 +44,12 @@ public class RuleFactory {
 					   e);
 	    }
 	}
+    }
+    /**
+     * Make the given class accessible by simple name.
+     */
+    public void addImport(Class c) {
+	importedClasses.put(c.getSimpleName(), c);
     }
     protected Class getClass(String name) {
 	try {
