@@ -49,6 +49,14 @@ public class RuleEngine {
 		}
 	    }
 
+	    if (obj.has("imports")) {
+		JSONArray imports = obj.getJSONArray("imports");
+		for (int i = 0; i < imports.length(); ++i) {
+		    String s = imports.getString(i);
+		    factory.addImport(s);
+		}
+	    }
+
 	    // Next, instantiate the details
 	    for (String tag : JSONObject.getNames(rulesObject)) {
 		Rule rule = rules.get(tag);

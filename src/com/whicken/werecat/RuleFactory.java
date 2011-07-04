@@ -10,6 +10,9 @@ import com.whicken.werecat.expr.ClassReference;
 import com.whicken.werecat.expr.IdentifierCall;
 import java.lang.reflect.*;
 import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.TreeMap;
 
 /**
  * Helper class for instantiating a RuleEngine.  Subclass to provide
@@ -17,10 +20,28 @@ import java.util.List;
  */
 public class RuleFactory {
     protected Class context;
+    protected Map<String, Class> importedClasses;
+    protected List<String> importedPackages;
     public RuleFactory(Class context) {
 	this.context = context;
+	importedClasses = new TreeMap<String, Class>();
+	importedPackages = new ArrayList<String>();
     }
-    // FR: Support "import" type syntax to reference static methods, etc
+    public void addImport(String path) {
+	if (path.endsWith(".*")) {
+	    importedPackages.add(path.substring(0, path.length()-1));
+	} else {
+	    try {
+		Class c = Class.forName(path);
+		importedClasses.put(c.getSimpleName(), c);
+	    } catch (Throwable e) {
+		// NoClassDefFoundError
+		// ClassNotFoundException
+		throw new RuntimeException("Cannot import class "+path,
+					   e);
+	    }
+	}
+    }
     protected Class getClass(String name) {
 	try {
 	    Package p = context.getPackage();
@@ -29,6 +50,17 @@ public class RuleFactory {
 	} catch (Throwable e) {
 	    // NoClassDefFoundError
 	    // ClassNotFoundException
+	}
+	Class c = importedClasses.get(name);
+	if (c != null)
+	    return c;
+	for (String p : importedPackages) {
+	    try {
+		return context.forName(p+name);
+	    } catch (Throwable e) {
+		// NoClassDefFoundError
+		// ClassNotFoundException
+	    }
 	}
 	return null;
     }
