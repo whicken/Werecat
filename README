@@ -3,4 +3,4 @@ build procedure for this project yet.
 
 To update javadocs:
 
-javadoc com.whicken.werecat com.whicken.werecat.paw -d doc/javadoc
+javadoc src/com/whicken/werecat/*java src/com/whicken/werecat/paw/*java -d doc/javadoc
