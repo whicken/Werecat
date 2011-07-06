@@ -54,7 +54,11 @@ public class RuleFactory {
     protected Class getClass(String name) {
 	try {
 	    Package p = context.getPackage();
-	    Class c = context.forName(p.getName()+"."+name);
+	    Class c;
+	    if (p == null)
+		c = context.forName(name);
+	    else
+		c = context.forName(p.getName()+"."+name);
 	    return c;
 	} catch (Throwable e) {
 	    // NoClassDefFoundError
