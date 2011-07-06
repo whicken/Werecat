@@ -59,17 +59,17 @@ section.</p>
 
 <ul>
 <li>tag Identify the next rule to evaluate.  A tag must match the tag of a defined rule.
-<li>method Call a function in your own code.  The method must match a function you have defined, and indicated in the rule with ().
+<li>method Call a function in your own code.  The method must match a function you have defined, and should include any arguments.
 </ul></po>
 
 <p>
-If you are using only one of the actions, simply include that action.
-If you are using both,separate them by commas.  (You may also omit the
+If you are using only a single action, simply include that action.
+If you are multiple actions, separate them by semicolons.  (You may also omit the
 action entirely if not needed). A fully loaded action might look like
 this:</p>
 
 <pre>
-"action": "myMethod(),nextTag"
+"action": "myMethod();nextTag"
 </pre>
 
 <p>Typically, the method will be used to update status in your Context

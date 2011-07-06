@@ -75,7 +75,7 @@ public class RuleEngine {
 
 		if (o.has("accept")) {
 		    String accept = o.getString("accept");
-		    String[] actions = accept.split(",");
+		    String[] actions = accept.split(";");
 		    List<Expression> calls = new ArrayList<Expression>();
 		    for (String s : actions) {
 			if (s.indexOf("(") > 0) {
@@ -97,7 +97,7 @@ public class RuleEngine {
 		}
 		if (o.has("decline")) {
 		    String decline = o.getString("decline");
-		    String[] actions = decline.split(",");
+		    String[] actions = decline.split(";");
 		    List<Expression> calls = new ArrayList<Expression>();
 		    for (String s : actions) {
 			if (s.indexOf("(") > 0) {
