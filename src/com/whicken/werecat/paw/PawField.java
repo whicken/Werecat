@@ -21,4 +21,7 @@ class PawField extends Expression {
 	    throw new RuntimeException(t.getMessage());
 	}
     }
+    public String toString() {
+	return field.getName();
+    }
 }

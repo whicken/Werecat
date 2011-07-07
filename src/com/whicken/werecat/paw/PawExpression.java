@@ -11,4 +11,7 @@ public class PawExpression<T> {
 	PawContext context = new PawContext<T>(object);
 	return expr.getValue(context);
     }
+    public String toString() {
+	return expr.toString();
+    }
 }
