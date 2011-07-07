@@ -46,6 +46,11 @@ public class PawParserTest extends TestCase {
 	assertNotNull(expr);
 	assertTrue(expr.expr instanceof PawMethod);
 	assertEquals(4.0, Expression.asDouble(expr.getValue(samples.get(0))));
+
+	// Test negative integer comparisons
+	Sample minus1 = new Sample("-1");
+	expr = parser.parse("str=-1");
+	assertEquals(Boolean.TRUE, expr.getValue(minus1));
     }
     public void testClassReference()
 	throws Exception

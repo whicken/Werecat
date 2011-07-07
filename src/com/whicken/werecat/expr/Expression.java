@@ -56,6 +56,9 @@ public abstract class Expression {
 		if (dot)
 		    return false;
 		dot = true;
+	    } else if (s.charAt(i) == '-') {
+		if (i > 0)
+		    return false;
 	    } else if (Character.isDigit(s.charAt(i))) {
 	    } else {
 		return false;
