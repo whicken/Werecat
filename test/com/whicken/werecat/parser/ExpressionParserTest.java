@@ -23,5 +23,9 @@ public class ExpressionParserTest extends TestCase {
 	e = ExpressionParser.parse("0.23", factory);
 	assertTrue(e instanceof SimpleConstant);
 	assertTrue(e.getValue(null) instanceof Double);
+
+	factory.addImport(Math.class);
+	e = ExpressionParser.parse("class.canonicalName =~ /ject/ and Math.random() < 0.1", factory);
+	assertNotNull(e);
     }
 }

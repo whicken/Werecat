@@ -276,7 +276,7 @@ STRINGLITERAL
 REGEXPLITERAL
     :   '/'
         (   EscapeSequence
-        |   ~( '\\' | '"' | '\r' | '\n' )
+        |   ~( '\\' | '"' | '\r' | '\n' | '/' )
         )*
         '/'
     ;
