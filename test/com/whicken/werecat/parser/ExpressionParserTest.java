@@ -19,5 +19,9 @@ public class ExpressionParserTest extends TestCase {
 	assertTrue(e instanceof SimpleConstant);
 	assertTrue(e.getValue(null) instanceof String);
 	assertEquals("test", e.getValue(null));
+
+	e = ExpressionParser.parse("0.23", factory);
+	assertTrue(e instanceof SimpleConstant);
+	assertTrue(e.getValue(null) instanceof Double);
     }
 }

@@ -65,7 +65,7 @@ public class RuleEngine {
 		try {
 		    rule.condition = ExpressionParser.parse(str, factory);
 		} catch (Throwable t) {
-		    throw new IOException("Cannot parse condition for "+tag+": "+str);
+		    throw new IOException("Cannot parse condition for "+tag+": "+str, t);
 		}
 		if (rule.condition == null) {
 		    throw new IOException("Invalid condition for "+tag+": "+str);
@@ -85,7 +85,7 @@ public class RuleEngine {
 				    throw new IOException("Invalid method: "+s);
 				calls.add(e);
 			    } catch (Throwable t) {
-				throw new IOException("Invalid method: "+s);
+				throw new IOException("Invalid method: "+s, t);
 			    }
 			} else {
 			    rule.accept = rules.get(s);
@@ -107,7 +107,7 @@ public class RuleEngine {
 				    throw new IOException("Invalid method: "+s);
 				calls.add(e);
 			    } catch (Throwable t) {
-				throw new IOException("Invalid method: "+s);
+				throw new IOException("Invalid method: "+s, t);
 			    }
 			} else {
 			    rule.decline = rules.get(s);
@@ -119,7 +119,6 @@ public class RuleEngine {
 		}
 	    }
 	} catch (JSONException e) {
-	    e.printStackTrace();
 	    throw new IOException(e);
 	}
 	return true;

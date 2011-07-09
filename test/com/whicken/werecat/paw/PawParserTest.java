@@ -82,5 +82,8 @@ public class PawParserTest extends TestCase {
 
 	expr = parser.parse("day = Day.Wednesday");
 	assertEquals(Boolean.TRUE, expr.getValue(sample));
+
+	expr = parser.parse("str =~ /a/");
+	assertEquals(Boolean.TRUE, expr.getValue(sample));
     }
 }

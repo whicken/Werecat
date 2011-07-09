@@ -147,7 +147,10 @@ unaryExprOther returns [Expression value]
     ;
 
 factor returns [Expression value]
-    : n=NUMBER { $value = new SimpleConstant(new Integer($n.text)); }
+    : n=INTLITERAL { $value = new SimpleConstant(new Integer($n.text)); }
+    | n=LONGLITERAL { $value = new SimpleConstant(new Long($n.text)); }
+    | n=FLOATLITERAL { $value = new SimpleConstant(new Float($n.text)); }
+    | n=DOUBLELITERAL { $value = new SimpleConstant(new Double($n.text)); }
     | n2=reference { $value = $n2.value; }
     | n=STRINGLITERAL { $value = new SimpleConstant($n.text.substring(1, $n.text.length()-1)); }
     | n=CHARLITERAL { $value = new SimpleConstant(new Character($n.text.charAt(1))); }
@@ -202,7 +205,55 @@ NULL: 'null';
 
 IDENTIFIER: IdentifierStart IdentifierPart* ;
 
-NUMBER: (DIGIT)+ ;
+LONGLITERAL
+    :   IntegerNumber LongSuffix
+    ;
+
+INTLITERAL
+    :   IntegerNumber 
+    ;
+    
+fragment
+IntegerNumber
+    :   '0' 
+    |   '1'..'9' ('0'..'9')*    
+    ;
+
+fragment
+LongSuffix
+    :   'l' | 'L'
+    ;
+
+fragment
+NonIntegerNumber
+    :   ('0' .. '9')+ '.' ('0' .. '9')* Exponent?  
+    |   '.' ( '0' .. '9' )+ Exponent?  
+    |   ('0' .. '9')+ Exponent  
+    |   ('0' .. '9')+ 
+    ;
+        
+fragment 
+Exponent    
+    :   ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ 
+    ;
+    
+fragment 
+FloatSuffix
+    :   'f' | 'F' 
+    ;     
+
+fragment
+DoubleSuffix
+    :   'd' | 'D'
+    ;
+        
+FLOATLITERAL
+    :   NonIntegerNumber FloatSuffix
+    ;
+    
+DOUBLELITERAL
+    :   NonIntegerNumber DoubleSuffix?
+    ;
 
 WHITESPACE : ( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ { $channel = HIDDEN; } ;
 
@@ -251,8 +302,6 @@ EscapeSequence
         )
     ;
 
-
-fragment DIGIT: '0'..'9' ;
 
 fragment IdentifierStart: 'a'..'z' | '_' | 'A'..'Z';
 
