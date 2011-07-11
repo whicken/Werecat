@@ -23,20 +23,36 @@ public class Rule {
 	return condition.toString();
     }
     public void evaluate(RuleContext context) {
+	evaluate(this, context);
+    }
+    // Remove tail end recursion to minimize impact on stack (also keeps
+    // exceptions from getting nested like crazy)
+    public static void evaluate(Rule rule, RuleContext context) {
 	try {
-	    Object o = condition.getValue(context);
-	    // For debugging: System.out.println(description+": "+o);
-	    if (Expression.asBoolean(o)) {
-		if (accept != null)
-		    for (Action a : accept)
-			a.evaluate(context);
-	    } else {
-		if (decline != null)
-		    for (Action a : decline)
-			a.evaluate(context);
+	    while (true) {
+		Object o = rule.condition.getValue(context);
+		// For debugging: System.out.println(rule.description+": "+o);
+		Action[] actions;
+		if (Expression.asBoolean(o))
+		    actions = rule.accept;
+		else
+		    actions = rule.decline;
+		if (actions == null)
+		    break;
+
+		for (int i = 0; i < actions.length-1; ++i)
+		    actions[i].evaluate(context);
+		
+		Action action = actions[actions.length-1];
+		if (!(action instanceof RuleAction)) {
+		    action.evaluate(context);
+		    break;
+		}
+
+		rule = ((RuleAction) action).rule;
 	    }
 	} catch (Throwable e) {
-	    throw new RuntimeException(description+": "+e.getMessage(), e);
+	    throw new RuntimeException(rule.description+": "+e.getMessage(), e);
 	}
     }
 }
