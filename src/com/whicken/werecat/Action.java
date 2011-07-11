@@ -1,5 +1,5 @@
 package com.whicken.werecat;
 
-public abstract class Action {
-    public abstract void evaluate(RuleContext context);
+abstract class Action {
+    abstract void evaluate(RuleContext context);
 }
