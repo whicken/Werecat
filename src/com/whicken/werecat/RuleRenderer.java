@@ -17,37 +17,34 @@ public class RuleRenderer {
         b.append("<p><i>"+rule.description+"</i></p>\n");
         b.append("<p>Condition: "+rule.condition+"</p>\n");
 
-	if (rule.accept != null || rule.acceptList != null) {
+	if (rule.accept != null) {
 	    b.append("<p>Accept: ");
 	    boolean first = true;
-	    if (rule.acceptList != null) {
-		for (Expression e : rule.acceptList) {
-		    if (first) first = false;
-		    else b.append(", ");
-		    b.append(e.toString());
-		}
-	    }
 	    if (rule.accept != null) {
-		if (first) first = false;
-		else b.append(", ");
-		b.append("<a href=\"#"+rule.accept.tag+"\">"+rule.accept.tag+"</a>");
+		for (Action a : rule.accept) {
+		    if (first) first = false;
+		    else b.append("; ");
+		    if (a instanceof RuleAction) {
+			b.append("<a href=\"#"+a.toString()+"\">"+a.toString()+"</a>");
+		    } else {
+			b.append(a.toString());
+		    }
+		}
 	    }
 	    b.append("</p>\n");
 	}
-	if (rule.decline != null || rule.declineList != null) {
+	if (rule.decline != null) {
 	    b.append("<p>Decline: ");
 	    boolean first = true;
-	    if (rule.declineList != null) {
-		for (Expression e : rule.declineList) {
-		    if (first) first = false;
-		    else b.append(", ");
-		    b.append(e.toString());
-		}
-	    }
 	    if (rule.decline != null) {
-		if (first) first = false;
-		else b.append(", ");
-		b.append("<a href=\"#"+rule.decline.tag+"\">"+rule.decline.tag+"</a>");
+		for (Action a : rule.decline) {
+		    if (first) first = false;
+		    else b.append("; ");
+		    if (a instanceof RuleAction)
+			b.append("<a href=\"#"+a.toString()+"\">"+a.toString()+"</a>");
+		    else
+			b.append(a.toString());
+		}
 	    }
 	    b.append("</p>\n");
 	}

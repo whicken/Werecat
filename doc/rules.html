@@ -54,21 +54,21 @@ the constant <b>true</b> for the expression.</p>
 
 <p><b>decline</b> is the list of actions to take when the condition is false (optional).</p>
 
-<p>The action list is a semicolon separated list of actions, which fall
-into one of two types.  You may have zero or one tags, and zero or
-more calls.</p>
+<p>The action list is a semicolon separated list of actions, which
+fall into one of two types.  You may have any number of actions or
+either type, or none at all. If there are multiple actions, they will
+be evaluated in the order they appear in the rule.</p>
 
-<p><b>tag</b> An action may contain a single tag.  If this tag is
-present, then all other actions will be evaluated first, then the rule
-engine will proceed to the named rule. If no tag is present in the
-action list, rule evaluation will stop with this rule.</p>
+<p><b>tag</b> An action may contain a tag.  If the tag is present,
+then the rule engine will proceed to the named rule. If no tag is
+present in the action list, rule evaluation will stop with this
+rule.</p>
 
-<p><b>call</b> An action may contain any number of calls. Each call
-may pass parameters and use expressions, but any arguments must be of
-the correct type to call the name function. If multiple calls are
-present, they will be evaluated in the order specified.  All calls are
-evaluated before the next tag is visited, regardless of the order of
-calls and tags.</p>
+<p><b>call</b> An action may contain a call. Each call may pass
+parameters and use expressions, but any arguments must be of the
+correct type to call the name function.</p>
+
+<p><font size="-1">[<a href="index.html">Back to Werecat Home</a>]</font></p>
 
 </body>
 </html>

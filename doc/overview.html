@@ -104,9 +104,9 @@ public class ExampleContext extends RuleContext {
 
 <p>Because there is a method call getLevel, you may now use the variable level in your conditions (like "level != 2").</p>
 
-<p>Actions can be any public method of your RuleContext.  You can use
-any information you need from the context, including updating input
-values, or setting outputs.</p>
+<p>Actions can call any public method of your RuleContext.  You can
+use any information you need from the context, including updating
+input values, or setting outputs.</p>
 
 </p>Using the rule engine itself is very simple.  First, import the package:</p>
 
@@ -132,6 +132,8 @@ context.level = 4;
 engine.evaluate(context);
 System.out.println("Result: "+context.action);
 </pre>
+
+<p><font size="-1">[<a href="index.html">Back to Werecat Home</a>]</font></p>
 
 </body>
 </html>
