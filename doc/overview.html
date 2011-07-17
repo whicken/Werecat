@@ -80,11 +80,12 @@ object, as explained in the next section.</p>
 <p>The most important class when using the Rule Engine is the
 RuleContext.  Each time you evaluate a Rule, you should create a
 RuleContext that stores all the inputs needed in the rule engine, and
-has the ability to store any outputs you want.  You should subclass
-RuleContext to add your own fields and methods, like this:</p>
+has the ability to store any outputs you want.  You should implement
+RuleContext on your own class to expose fields and methods you want to use
+in the rules, like this:</p>
 
 <pre>
-public class ExampleContext extends RuleContext {
+public class ExampleContext implements RuleContext {
     // Inputs
     int level; // Some sample value
 
