@@ -5,6 +5,7 @@ import com.whicken.werecat.parser.ExpressionParser;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.ArrayList;
@@ -26,9 +27,23 @@ public class RuleEngine {
 	    list[i] = actions.get(i);
 	return list;
     }
-    public boolean load(File file, RuleFactory factory) throws IOException {
+    public boolean load(File file, RuleFactory factory)
+	throws IOException
+    {
+	FileReader reader = null;
 	try {
-	    JSONTokener token = new JSONTokener(new FileReader(file));
+	    reader = new FileReader(file);
+	    return load(reader, factory);
+	} finally {
+	    if (reader != null)
+		reader.close();
+	}
+    }
+    public boolean load(Reader reader, RuleFactory factory)
+	throws IOException
+    {
+	try {
+	    JSONTokener token = new JSONTokener(reader);
 	    JSONObject obj = new JSONObject(token);
 
 	    String version = obj.getString("version");
