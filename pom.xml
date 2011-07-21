@@ -26,4 +26,14 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>emma-maven-plugin</artifactId>
+        <version>1.0-alpha-3</version>
+        <inherited>true</inherited>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>
