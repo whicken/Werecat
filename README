@@ -1,6 +1,2 @@
-See the doc folder for information and examples.  There is no clean
-build procedure for this project yet.
-
-To update javadocs:
-
-javadoc src/com/whicken/werecat/*java src/com/whicken/werecat/paw/*java -d doc/javadoc
+See the doc folder for information and examples.  You will need to run 
+ANTLR manually to regenerate the grammar for now.
