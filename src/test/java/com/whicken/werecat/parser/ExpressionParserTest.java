@@ -5,12 +5,11 @@ import com.whicken.werecat.expr.*;
 import junit.framework.*;
 
 public class ExpressionParserTest extends TestCase {
-    public void testParser()
-	throws Exception
+    // Test constants are stored properly
+    public void testConstants() throws Exception
     {
 	RuleFactory factory = new RuleFactory(Object.class);
 
-	// Test constants are stored properly
 	Expression e = ExpressionParser.parse("1", factory);
 	assertTrue(e instanceof SimpleConstant);
 	assertTrue(e.getValue(null) instanceof Integer);
@@ -19,13 +18,58 @@ public class ExpressionParserTest extends TestCase {
 	assertTrue(e instanceof SimpleConstant);
 	assertTrue(e.getValue(null) instanceof String);
 	assertEquals("test", e.getValue(null));
+	assertEquals("\"test\"", e.toString());
 
 	e = ExpressionParser.parse("0.23", factory);
 	assertTrue(e instanceof SimpleConstant);
 	assertTrue(e.getValue(null) instanceof Double);
 
+	e = ExpressionParser.parse("null", factory);
+	assertTrue(e instanceof SimpleConstant);
+	assertNull(e.getValue(null));
+	assertEquals("null", e.toString());
+    }
+
+    public void testImport() throws Exception
+    {
+	RuleFactory factory = new RuleFactory(Object.class);
 	factory.addImport(Math.class);
-	e = ExpressionParser.parse("class.canonicalName =~ /ject/ and Math.random() < 0.1", factory);
+	Expression e = ExpressionParser.parse("class.canonicalName =~ /ject/ and Math.random() < 0.1", factory);
 	assertNotNull(e);
+    }
+
+    // These are kind of mindless, but prevent silly screw-ups in the future
+    public void testOperators() throws Exception
+    {
+	RuleFactory factory = new RuleFactory(Object.class);
+
+	Expression e = ExpressionParser.parse("1 > 0", factory);
+	assertTrue(e instanceof GTExpression);
+	assertEquals(Boolean.TRUE, e.getValue(null));
+	assertEquals("1 > 0", e.toString());
+	e = ExpressionParser.parse("0 > 1", factory);
+	assertEquals(Boolean.FALSE, e.getValue(null));
+
+	e = ExpressionParser.parse("1 >= 1", factory);
+	assertTrue(e instanceof GEExpression);
+	assertEquals(Boolean.TRUE, e.getValue(null));
+	assertEquals("1 >= 1", e.toString());
+	e = ExpressionParser.parse("0 >= 1", factory);
+	assertEquals(Boolean.FALSE, e.getValue(null));
+
+	e = ExpressionParser.parse("0 < 1", factory);
+	assertTrue(e instanceof LTExpression);
+	assertEquals(Boolean.TRUE, e.getValue(null));
+	assertEquals("0 < 1", e.toString());
+	e = ExpressionParser.parse("0 < 0", factory);
+	assertEquals(Boolean.FALSE, e.getValue(null));
+
+	e = ExpressionParser.parse("0 <= 0", factory);
+	assertTrue(e instanceof LEExpression);
+	assertEquals(Boolean.TRUE, e.getValue(null));
+	assertEquals("0 <= 0", e.toString());
+	e = ExpressionParser.parse("1 <= 0", factory);
+	assertEquals(Boolean.FALSE, e.getValue(null));
+
     }
 }
