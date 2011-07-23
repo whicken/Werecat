@@ -1,6 +1,7 @@
 package com.whicken.werecat.expr;
 
 import com.whicken.werecat.RuleContext;
+import com.whicken.werecat.WerecatException;
 import java.util.List;
 
 public class BlindMethod extends Expression {
@@ -17,7 +18,7 @@ public class BlindMethod extends Expression {
 	}
     }
     public Object getValue(RuleContext context) {
-	throw new RuntimeException("BlindMethod cannot be evaluated.");
+	throw new WerecatException("BlindMethod cannot be evaluated.");
     }
     public String toString() {
 	StringBuffer b = new StringBuffer(method);

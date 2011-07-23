@@ -31,7 +31,9 @@ public class RuleFactory {
      * Make the given classes accessible by simple name. You may use
      * wildcards or explicit paths.
      */
-    public void addImport(String path) {
+    public void addImport(String path)
+	throws WerecatException
+    {
 	if (path.endsWith(".*")) {
 	    importedPackages.add(path.substring(0, path.length()-1));
 	} else {
@@ -40,8 +42,7 @@ public class RuleFactory {
 	    } catch (Throwable e) {
 		// NoClassDefFoundError
 		// ClassNotFoundException
-		throw new RuntimeException("Cannot import class "+path,
-					   e);
+		throw new WerecatException("Cannot import class "+path, e);
 	    }
 	}
     }
@@ -61,8 +62,7 @@ public class RuleFactory {
 		c = context.forName(p.getName()+"."+name);
 	    return c;
 	} catch (Throwable e) {
-	    // NoClassDefFoundError
-	    // ClassNotFoundException
+	    // Not an error (NoClassDefFoundError, ClassNotFoundException)
 	}
 	Class c = importedClasses.get(name);
 	if (c != null)
@@ -71,8 +71,7 @@ public class RuleFactory {
 	    try {
 		return context.forName(p+name);
 	    } catch (Throwable e) {
-		// NoClassDefFoundError
-		// ClassNotFoundException
+		// Not an error (NoClassDefFoundError, ClassNotFoundException)
 	    }
 	}
 	return null;
@@ -117,6 +116,7 @@ public class RuleFactory {
 	    if ((field.getModifiers() & Modifier.PUBLIC) != 0)
 		return new FieldExpression(field);
 	} catch (NoSuchFieldException e) {
+	    // Not an error
 	}
 
 	String method;
@@ -134,7 +134,7 @@ public class RuleFactory {
 	if (c != null)
 	    return new ClassReference(c);
 
-	return null;
+	throw new WerecatException("Cannot resolve field: "+key);
     }
     /**
      * Override this is you want something different than reflection.
@@ -143,7 +143,7 @@ public class RuleFactory {
 	Method m = getMethod(method, args);
 	if (m != null)
 	    return new MethodExpression(m, args);
-	return null;
+	throw new WerecatException("Cannot resolve method: "+method);
     }
     public Expression createCompoundExpression(Expression lhs, Object rhs) {
 	if (rhs instanceof String) {
@@ -160,6 +160,6 @@ public class RuleFactory {
 	    // lhs[thing]
 	    return new ArrayExpression(lhs, (Expression) rhs);
 	}
-	throw new RuntimeException("Unexpected case in createCompoundExpression");
+	throw new WerecatException("Cannot resolve "+lhs+"."+rhs);
     }
 }

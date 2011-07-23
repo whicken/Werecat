@@ -62,7 +62,7 @@ public class RuleRenderer {
 		RuleRenderer r = new RuleRenderer();
 		r.render(engine);
 		System.out.println(r.toString());
-	    } catch (IOException e) {
+	    } catch (Throwable e) {
 		System.out.println("Error for "+arg);
 	    }
 	}

@@ -1,6 +1,7 @@
 package com.whicken.werecat.paw;
 
 import com.whicken.werecat.RuleFactory;
+import com.whicken.werecat.WerecatException;
 import com.whicken.werecat.expr.Expression;
 import com.whicken.werecat.expr.MethodExpression;
 import com.whicken.werecat.expr.ClassReference;
@@ -37,12 +38,13 @@ class PawFactory extends RuleFactory {
 	if (c != null)
 	    return new ClassReference(c);
 
-	return null;
+	throw new WerecatException("Cannot resolve field: "+key);
     }
     public Expression createMethod(String method, List<Expression> args) {
 	Method m = getMethod(method, args);
 	if (m != null)
 	    return new PawMethod(m, args);
-	return null;
+
+	throw new WerecatException("Cannot resolve method: "+method);
     }
 }

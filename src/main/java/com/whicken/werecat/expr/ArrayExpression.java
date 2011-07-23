@@ -1,6 +1,7 @@
 package com.whicken.werecat.expr;
 
 import com.whicken.werecat.RuleContext;
+import com.whicken.werecat.WerecatException;
 import java.lang.reflect.TypeVariable;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,8 @@ public class ArrayExpression extends BinaryExpression {
 	    Object index = rhs.getValue(context);
 	    return ((Set) l).contains(index) ? Boolean.TRUE : Boolean.FALSE;
 	}
-	throw new RuntimeException("Unable to index: "+l.getClass());
+	throw new WerecatException("Unable to index: "+
+				   (l == null ? "null" : l.getClass()));
     }
     public String toString() {
 	StringBuffer b = new StringBuffer();

@@ -1,7 +1,8 @@
 package com.whicken.werecat.paw;
 
-import com.whicken.werecat.expr.Expression;
 import com.whicken.werecat.RuleContext;
+import com.whicken.werecat.WerecatException;
+import com.whicken.werecat.expr.Expression;
 import java.lang.reflect.*;
 
 /**
@@ -18,7 +19,7 @@ class PawField extends Expression {
 	    Object obj = ((PawContext) context).object;
 	    return field.get(obj);
 	} catch (Throwable t) {
-	    throw new RuntimeException(t.getMessage());
+	    throw new WerecatException("Error accessing field "+field, t);
 	}
     }
     public String toString() {

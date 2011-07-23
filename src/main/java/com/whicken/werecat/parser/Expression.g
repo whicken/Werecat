@@ -167,10 +167,8 @@ reference returns [Expression value]
     { 
         if (field) {
             $value = factory.createField($n.text);
-            if ($value == null) throw new RuntimeException("Unknown field: "+$n.text); 
         } else {
             $value = factory.createMethod($n.text, $a.value);
-            if ($value == null) throw new RuntimeException("Unknown method: "+$n.text); 
         }
     }
     ;

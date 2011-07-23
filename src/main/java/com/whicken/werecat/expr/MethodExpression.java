@@ -1,6 +1,7 @@
 package com.whicken.werecat.expr;
 
 import com.whicken.werecat.RuleContext;
+import com.whicken.werecat.WerecatException;
 import java.lang.reflect.*;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class MethodExpression extends Expression {
 	    }
 	    return method.invoke(context, a);
 	} catch (Throwable t) {
-	    throw new RuntimeException(t.getMessage(), t);
+	    throw new WerecatException("Error invoking "+method, t);
 	}
     }
     public String toString() {

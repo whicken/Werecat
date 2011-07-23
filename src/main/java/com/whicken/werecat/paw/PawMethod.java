@@ -1,8 +1,9 @@
 package com.whicken.werecat.paw;
 
+import com.whicken.werecat.RuleContext;
+import com.whicken.werecat.WerecatException;
 import com.whicken.werecat.expr.Expression;
 import com.whicken.werecat.expr.MethodExpression;
-import com.whicken.werecat.RuleContext;
 import java.lang.reflect.*;
 import java.util.List;
 
@@ -27,8 +28,7 @@ class PawMethod extends MethodExpression {
 	    }
 	    return method.invoke(obj, a);
 	} catch (Throwable t) {
-	    throw new RuntimeException(t.getMessage());
+	    throw new WerecatException("Error invoking "+method, t);
 	}
-
     }
 }

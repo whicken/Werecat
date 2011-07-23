@@ -1,6 +1,7 @@
 package com.whicken.werecat.expr;
 
 import com.whicken.werecat.RuleContext;
+import com.whicken.werecat.WerecatException;
 import java.lang.reflect.*;
 
 /**
@@ -13,7 +14,7 @@ public class ClassReference extends Expression {
 	this.c = c;
     }
     public Object getValue(RuleContext context) {
-	throw new RuntimeException("Bare class name cannnot be referenced");
+	throw new WerecatException("Bare class name cannnot be referenced: "+c);
     }
     public String toString() {
 	return c.getName();

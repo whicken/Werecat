@@ -1,6 +1,7 @@
 package com.whicken.werecat.expr;
 
 import com.whicken.werecat.RuleContext;
+import com.whicken.werecat.WerecatException;
 import java.lang.reflect.*;
 
 /**
@@ -22,7 +23,7 @@ public class DotExpression extends UnaryExpression {
 	} else {
 	    l = expr.getValue(context);
 	    if (l == null)
-		throw new RuntimeException("Dereferencing null");
+		throw new WerecatException("Dereferencing null");
 	    c = l.getClass();
 	}
 	try {
@@ -31,7 +32,7 @@ public class DotExpression extends UnaryExpression {
 		return f.get(l);
 	} catch (NoSuchFieldException e) {
 	} catch (IllegalAccessException e) {
-	    throw new RuntimeException(e);
+	    throw new WerecatException("Error accessing "+field+" on "+c, e);
 	}
 	String method;
 	if (Character.isLowerCase(field.charAt(0))) {
@@ -46,11 +47,11 @@ public class DotExpression extends UnaryExpression {
 		return m.invoke(l, (Object[]) null);
 	} catch (NoSuchMethodException e) {
 	} catch (IllegalAccessException e) {
-	    throw new RuntimeException(e);
+	    throw new WerecatException("Error accessing "+field+" on "+c, e);
 	} catch (InvocationTargetException e) {
-	    throw new RuntimeException(e);
+	    throw new WerecatException("Error invoking "+method+" on "+c, e);
 	}
-	throw new RuntimeException("Cannot resolve "+field);
+	throw new WerecatException("Cannot resolve "+field+" on "+c);
     }
     public String toString() {
 	StringBuffer b = new StringBuffer();

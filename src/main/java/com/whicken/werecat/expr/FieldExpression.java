@@ -1,6 +1,7 @@
 package com.whicken.werecat.expr;
 
 import com.whicken.werecat.RuleContext;
+import com.whicken.werecat.WerecatException;
 import java.lang.reflect.*;
 
 /**
@@ -15,7 +16,7 @@ public class FieldExpression extends Expression {
 	try {
 	    return field.get(context);
 	} catch (Throwable t) {
-	    throw new RuntimeException(t.getMessage(), t);
+	    throw new WerecatException("Error accessing field "+field, t);
 	}
     }
     public String toString() {

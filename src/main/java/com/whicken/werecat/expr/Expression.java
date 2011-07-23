@@ -1,6 +1,7 @@
 package com.whicken.werecat.expr;
 
 import com.whicken.werecat.RuleContext;
+import com.whicken.werecat.WerecatException;
 
 public abstract class Expression {
     public abstract Object getValue(RuleContext context);
@@ -16,7 +17,8 @@ public abstract class Expression {
 	    return ((Number) o).doubleValue() != 0;
 	if (o instanceof Character)
 	    return ((Character) o).charValue() != 0;
-	throw new RuntimeException("Unexpected boolean conversion: "+o);
+	throw new WerecatException("Unexpected boolean conversion: "+
+				   o.getClass());
     }
     public double getDouble(RuleContext context) {
 	return asDouble(getValue(context));
@@ -30,7 +32,8 @@ public abstract class Expression {
 	    return ((Character) o).charValue();
 	if (o != null)
 	    return Double.parseDouble(o.toString());
-	throw new RuntimeException("Unexpected numeric conversion: "+o);
+	throw new WerecatException("Unexpected numeric conversion: "+
+				   (o == null ? "null" : o.getClass()));
     }
     public String getString(RuleContext context) {
 	return asString(getValue(context));

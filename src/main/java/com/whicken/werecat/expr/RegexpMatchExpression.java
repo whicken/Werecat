@@ -1,6 +1,7 @@
 package com.whicken.werecat.expr;
 
 import com.whicken.werecat.RuleContext;
+import com.whicken.werecat.WerecatException;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -29,7 +30,7 @@ public class RegexpMatchExpression extends BinaryExpression {
 	    }
 	    return null;
 	}
-	throw new RuntimeException("Unsupported types in =~");
+	throw new WerecatException("Unsupported types in =~: "+l+" =~ "+r);
     }
     public String toString() {
 	StringBuffer b = new StringBuffer();

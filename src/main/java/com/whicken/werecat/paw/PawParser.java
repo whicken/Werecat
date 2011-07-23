@@ -18,7 +18,7 @@ public class PawParser<T> {
 	    if (e != null)
 		return new PawExpression(e);
 	} catch (Throwable t) {
-	    // TODO: Propagate this error cleanly
+	    // TODO: Propagate this error cleanly -
 	}
 	return null;
     }

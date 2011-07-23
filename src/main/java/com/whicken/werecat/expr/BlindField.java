@@ -1,6 +1,7 @@
 package com.whicken.werecat.expr;
 
 import com.whicken.werecat.RuleContext;
+import com.whicken.werecat.WerecatException;
 
 public class BlindField extends Expression {
     String field;
@@ -8,7 +9,7 @@ public class BlindField extends Expression {
 	this.field = field;
     }
     public Object getValue(RuleContext context) {
-	throw new RuntimeException("BlindField cannot be evaluated.");
+	throw new WerecatException("BlindField cannot be evaluated.");
     }
     public String toString() {
 	return field;

@@ -2,6 +2,7 @@ package com.whicken.werecat.expr;
 
 import com.whicken.werecat.RuleContext;
 import com.whicken.werecat.RuleFactory;
+import com.whicken.werecat.WerecatException;
 import java.lang.reflect.*;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class DotMethodExpression extends UnaryExpression {
 	} else {
 	    l = expr.getValue(context);
 	    if (l == null)
-		throw new RuntimeException("Dereferencing null");
+		throw new WerecatException("Dereferencing null");
 	    c = l.getClass();
 	}
 	try {
@@ -43,10 +44,10 @@ public class DotMethodExpression extends UnaryExpression {
 		}
 		return m.invoke(l, a);
 	    }
+	    throw new WerecatException("Cannot resolve method: "+method);
 	} catch (Throwable e) {
-	    throw new RuntimeException("Error calling "+method, e);
+	    throw new WerecatException("Error invoking "+method, e);
 	}
-	throw new RuntimeException("Cannot resolve "+method);
     }
     public String toString() {
 	StringBuffer b = new StringBuffer();
