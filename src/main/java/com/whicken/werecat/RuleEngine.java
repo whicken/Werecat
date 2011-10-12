@@ -44,14 +44,23 @@ public class RuleEngine {
     {
 	JSONTokener token = new JSONTokener(reader);
 	JSONObject obj = new JSONObject(token);
+	return load(obj, factory);
+    }
 	
+    /**
+     * Use this initialization method if your Werecat rules are embedded 
+     * in another JSON file.
+     */
+    public boolean load(JSONObject obj, RuleFactory factory)
+	throws JSONException, WerecatException
+    {
 	String version = obj.getString("version");
 	JSONObject rulesObject = obj.getJSONObject("rules");
 	
 	// Make the basic tree first
 	for (String tag : JSONObject.getNames(rulesObject)) {
 	    if (rules.get(tag) != null)
-		throw new IOException("Duplicate tag: "+tag);
+		throw new WerecatException("Duplicate tag: "+tag);
 	    rules.put(tag, new Rule(tag));
 	}
 	
@@ -59,7 +68,7 @@ public class RuleEngine {
 	    String top = obj.getString("top");
 	    this.top = rules.get(top);
 	    if (this.top == null) {
-		throw new IOException("Invalid top: "+top);
+		throw new WerecatException("Invalid top: "+top);
 	    }
 	}
 	
@@ -79,10 +88,10 @@ public class RuleEngine {
 	    try {
 		rule.condition = ExpressionParser.parse(str, factory);
 	    } catch (Throwable t) {
-		throw new IOException("Cannot parse condition for "+tag+": "+str, t);
+		throw new WerecatException("Cannot parse condition for "+tag+": "+str, t);
 	    }
 	    if (rule.condition == null) {
-		throw new IOException("Invalid condition for "+tag+": "+str);
+		throw new WerecatException("Invalid condition for "+tag+": "+str);
 	    }
 	    if (o.has("description"))
 		rule.description = o.getString("description");
@@ -96,15 +105,15 @@ public class RuleEngine {
 			try {
 			    Expression e = ExpressionParser.parse(s, factory);
 			    if (e == null)
-				throw new IOException("Invalid method: "+s);
+				throw new WerecatException("Invalid method: "+s);
 			    actions.add(new ExpressionAction(e));
 			} catch (Throwable t) {
-			    throw new IOException("Invalid method: "+s, t);
+			    throw new WerecatException("Invalid method: "+s, t);
 			}
 		    } else {
 			Rule r = rules.get(s);
 			if (r == null)
-			    throw new IOException("Invalid rule: "+s);
+			    throw new WerecatException("Invalid rule: "+s);
 			actions.add(new RuleAction(r));
 		    }
 		}
@@ -119,15 +128,15 @@ public class RuleEngine {
 			try {
 			    Expression e = ExpressionParser.parse(s, factory);
 			    if (e == null)
-				throw new IOException("Invalid method: "+s);
+				throw new WerecatException("Invalid method: "+s);
 			    actions.add(new ExpressionAction(e));
 			} catch (Throwable t) {
-			    throw new IOException("Invalid method: "+s, t);
+			    throw new WerecatException("Invalid method: "+s, t);
 			}
 		    } else {
 			Rule r  = rules.get(s);
 			if (r == null)
-			    throw new IOException("Invalid rule: "+s);
+			    throw new WerecatException("Invalid rule: "+s);
 			actions.add(new RuleAction(r));
 		    }
 		}
