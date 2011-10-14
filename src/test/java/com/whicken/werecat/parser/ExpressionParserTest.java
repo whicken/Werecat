@@ -3,8 +3,12 @@ package com.whicken.werecat.parser;
 import com.whicken.werecat.*;
 import com.whicken.werecat.expr.*;
 import junit.framework.*;
+import org.json.*;
 
 public class ExpressionParserTest extends TestCase {
+    public static class JSONContext implements RuleContext {
+	public JSONObject json;
+    };
     // Test constants are stored properly
     public void testConstants() throws Exception
     {
@@ -70,6 +74,16 @@ public class ExpressionParserTest extends TestCase {
 	assertEquals("0 <= 0", e.toString());
 	e = ExpressionParser.parse("1 <= 0", factory);
 	assertEquals(Boolean.FALSE, e.getValue(null));
-
+    }
+    // Test syntactic sugar on JSON
+    public void testJSON() throws Exception
+    {
+	RuleFactory factory = new RuleFactory(JSONContext.class);
+	Expression e = ExpressionParser.parse("json[\"test\"] = 1", factory);
+	JSONContext context = new JSONContext();
+	context.json = new JSONObject("{ \"test\": 1 }");
+	assertEquals(Boolean.TRUE, e.getValue(context));
+	e = ExpressionParser.parse("json[\"foo\"]", factory);
+	assertNull(e.getValue(context));
     }
 }
