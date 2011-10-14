@@ -37,8 +37,12 @@ public class PawParserTest extends TestCase {
 	expr = parser.parse("str");
 	assertNotNull(expr);
 	assertTrue(expr.expr instanceof PawField);
-	expr = parser.parse("foo");
-	assertNull(expr);
+	try {
+	    expr = parser.parse("foo");
+	    assertFalse(true);
+	} catch (WerecatException e) {
+	    // This is the expected path
+	}
 	expr = parser.parse("foo()");
 	assertNotNull(expr);
 	assertTrue(expr.expr instanceof PawMethod);
