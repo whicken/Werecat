@@ -79,11 +79,16 @@ public class ExpressionParserTest extends TestCase {
     public void testJSON() throws Exception
     {
 	RuleFactory factory = new RuleFactory(JSONContext.class);
-	Expression e = ExpressionParser.parse("json[\"test\"] = 1", factory);
 	JSONContext context = new JSONContext();
 	context.json = new JSONObject("{ \"test\": 1 }");
+
+	Expression e = ExpressionParser.parse("json[\"test\"] = 1", factory);
 	assertEquals(Boolean.TRUE, e.getValue(context));
+
 	e = ExpressionParser.parse("json[\"foo\"]", factory);
 	assertNull(e.getValue(context));
+
+	e = ExpressionParser.parse("json.test = 1", factory);
+	assertEquals(Boolean.TRUE, e.getValue(context));
     }
 }

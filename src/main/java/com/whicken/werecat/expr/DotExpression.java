@@ -3,6 +3,10 @@ package com.whicken.werecat.expr;
 import com.whicken.werecat.RuleContext;
 import com.whicken.werecat.WerecatException;
 import java.lang.reflect.*;
+import java.util.Map;
+import java.util.Set;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * This may not be particularly fast, since we do a full reflection
@@ -51,6 +55,25 @@ public class DotExpression extends UnaryExpression {
 	} catch (InvocationTargetException e) {
 	    throw new WerecatException("Error invoking "+method+" on "+c, e);
 	}
+
+	// Some syntactic sugar for maps and map-like objects
+	if (l instanceof Map) {
+	    // Note: This requires the key to be of the right type
+	    return ((Map) l).get(field);
+	} else if (l instanceof Set) {
+	    // Note: This requires the key to be of the right type
+	    return ((Set) l).contains(field) ? Boolean.TRUE : Boolean.FALSE;
+	} else if (l instanceof JSONObject) {
+	    try {
+		JSONObject obj = (JSONObject) l;
+		if (obj.has(field))
+		    return obj.get(field);
+		return null;
+	    } catch (JSONException e) {
+		// Note: This might be worthy of a log4j warning
+	    }
+	}
+
 	throw new WerecatException("Cannot resolve "+field+" on "+c);
     }
     public String toString() {
