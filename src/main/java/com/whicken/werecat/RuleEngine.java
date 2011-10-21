@@ -111,7 +111,7 @@ public class RuleEngine {
 			    throw new WerecatException("Invalid method: "+s, t);
 			}
 		    } else {
-			Rule r = rules.get(s);
+			Rule r = rules.get(s.trim());
 			if (r == null)
 			    throw new WerecatException("Invalid rule: "+s);
 			actions.add(new RuleAction(r));

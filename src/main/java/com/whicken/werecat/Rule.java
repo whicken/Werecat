@@ -25,6 +25,9 @@ public class Rule {
     public String getTag() {
 	return tag;
     }
+    public String toString() {
+        return tag+": "+description;
+    }
     public String getExpressionText() {
 	return condition.toString();
     }
