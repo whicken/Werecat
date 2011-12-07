@@ -81,26 +81,19 @@ public class RuleFactory {
      */
     public static Method getMethod(Class context,
 				   String method, List<Expression> args) {
-	try {
-	    if (args == null) {
-		Method m = context.getDeclaredMethod(method, (Class[]) null);
-		if ((m.getModifiers() & Modifier.PUBLIC) != 0)
-		    return m;
-	    } else {
-		// More work here, since we don't have types
-		Method[] list = context.getDeclaredMethods();
-		for (Method m : list) {
-		    if ((m.getModifiers() & Modifier.PUBLIC) == 0)
-			continue;
-		    if (!m.getName().equals(method))
-			continue;
-		    Class[] p = m.getParameterTypes();
-		    if (p.length == args.size())
-			return m;
-		}
-	    }
-	} catch (NoSuchMethodException e) {
-	    // Not an error
+	Method[] list = context.getMethods();
+	int ct = 0;
+	if (args != null)
+	    ct = args.size();
+	for (Method m : list) {
+	    if ((m.getModifiers() & Modifier.PUBLIC) == 0)
+		continue;
+	    if (!m.getName().equals(method))
+		continue;
+	    Class[] p = m.getParameterTypes();
+	    // Since we don't have types, we only check number of parameters
+	    if (p.length == ct)
+		return m;
 	}
 	return null;
     }
