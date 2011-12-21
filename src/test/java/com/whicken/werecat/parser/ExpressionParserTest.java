@@ -6,9 +6,20 @@ import junit.framework.*;
 import org.json.*;
 
 public class ExpressionParserTest extends TestCase {
+    public static class AssortedContext implements RuleContext {
+	public String bar = "BAR";
+    };
     public static class JSONContext implements RuleContext {
 	public JSONObject json;
     };
+    public void testStringExpressions() throws Exception
+    {
+	RuleFactory factory = new RuleFactory(AssortedContext.class);
+	AssortedContext context = new AssortedContext();
+
+	Expression e = ExpressionParser.parse("\"foo\"+bar", factory);
+	assertEquals("fooBAR", e.getValue(context));
+    }
     // Test constants are stored properly
     public void testConstants() throws Exception
     {

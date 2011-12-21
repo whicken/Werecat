@@ -7,7 +7,11 @@ public class PlusExpression extends BinaryExpression {
 	super(lhs, rhs);
     }
     public Object getValue(RuleContext context) {
-	return new Double(lhs.getDouble(context)+rhs.getDouble(context));
+	Object l = lhs.getValue(context);
+	Object r = rhs.getValue(context);
+	if (isNumber(l) && isNumber(r))
+	    return new Double(asDouble(l)+asDouble(r));
+	return asString(l)+asString(r);
     }
     public String toString() {
 	StringBuffer b = new StringBuffer();
