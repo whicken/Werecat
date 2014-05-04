@@ -23,6 +23,11 @@ class PawFactory extends RuleFactory {
 	} catch (NoSuchFieldException e) {
 	}
 
+	// This is primarily for scala, where fields get accessors
+	Method m1 = getMethod(key, null);
+	if (m1 != null)
+	    return new PawMethod(m1, null);
+
 	String method;
 	if (Character.isLowerCase(key.charAt(0))) {
 	    char c = Character.toUpperCase(key.charAt(0));
