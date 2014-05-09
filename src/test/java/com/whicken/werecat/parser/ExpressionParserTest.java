@@ -51,6 +51,8 @@ public class ExpressionParserTest extends TestCase {
 	factory.addImport(Math.class);
 	Expression e = ExpressionParser.parse("class.canonicalName =~ /ject/ and Math.random() < 0.1", factory);
 	assertNotNull(e);
+	// Make sure the FULL expression was parsed...
+	assertEquals("getClass().canonicalName =~ /ject/ and java.lang.Math.random() < 0.1", e.toString());
     }
 
     // These are kind of mindless, but prevent silly screw-ups in the future

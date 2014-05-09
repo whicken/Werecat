@@ -37,8 +37,9 @@ public class PawParserTest extends TestCase {
 	expr = parser.parse("str");
 	assertNotNull(expr);
 	assertTrue(expr.expr instanceof PawField);
+
 	try {
-	    expr = parser.parse("foo");
+	    expr = parser.parse("foo and");
 	    assertFalse(true);
 	} catch (WerecatException e) {
 	    // This is the expected path
@@ -55,6 +56,10 @@ public class PawParserTest extends TestCase {
 	Sample minus1 = new Sample("-1");
 	expr = parser.parse("str=-1");
 	assertEquals(Boolean.TRUE, expr.getValue(minus1));
+
+	// Test case insentivity
+	parser.parse("str=1 and str=1");
+	parser.parse("str=1 AND str=1");
     }
     public void testClassReference()
 	throws Exception

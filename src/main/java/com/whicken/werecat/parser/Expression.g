@@ -49,7 +49,11 @@ import com.whicken.werecat.expr.*;
         } catch (RecognitionException e)  {
             e.printStackTrace();
         }
-}
+    }
+    @Override
+    public void reportError(RecognitionException e) {
+        throw new WerecatException(e);
+    }
 }
 
 /*------------------------------------------------------------------
@@ -59,7 +63,7 @@ import com.whicken.werecat.expr.*;
 // Top of the tree
 
 top returns [Expression value]
-    : v=expr { $value = $v.value; }
+    : v=expr EOF { $value = $v.value; }
     ;
 
 expr returns [Expression value]
@@ -191,15 +195,15 @@ selector returns [Object value]
  * LEXER RULES
  *------------------------------------------------------------------*/
 
-AND: 'and';
+AND: ('and'|'AND');
 
-OR: 'or';
+OR: ('or'|'OR');
 
-TRUE: 'true';
+TRUE: ('true'|'TRUE');
 
-FALSE: 'false';
+FALSE: ('false'|'FALSE');
 
-NULL: 'null';
+NULL: ('null'|'NULL');
 
 IDENTIFIER: IdentifierStart IdentifierPart* ;
 
