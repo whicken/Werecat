@@ -7,7 +7,7 @@ public class NotExpression extends UnaryExpression {
 	super(expr);
     }
     public Object getValue(RuleContext context) {
-	return asBoolean(expr) ? Boolean.FALSE : Boolean.TRUE;
+	return asBoolean(expr.getValue(context)) ? Boolean.FALSE : Boolean.TRUE;
     }
     public String toString() {
 	return "!"+expr.toString();
