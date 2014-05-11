@@ -11,6 +11,10 @@ public class PawExpression<T> {
 	PawContext context = new PawContext<T>(object);
 	return expr.getValue(context);
     }
+    public boolean getBoolean(T object) {
+	PawContext context = new PawContext<T>(object);
+	return expr.getBoolean(context);
+    }
     public String toString() {
 	return expr.toString();
     }
