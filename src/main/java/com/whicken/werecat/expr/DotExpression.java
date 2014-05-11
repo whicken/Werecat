@@ -38,6 +38,19 @@ public class DotExpression extends UnaryExpression {
 	} catch (IllegalAccessException e) {
 	    throw new WerecatException("Error accessing "+field+" on "+c, e);
 	}
+
+	// First look for plain accessor (scala style)
+	try {
+	    Method m = c.getDeclaredMethod(field, (Class[]) null);
+	    if ((m.getModifiers() & Modifier.PUBLIC) != 0)
+		return m.invoke(l, (Object[]) null);
+	} catch (NoSuchMethodException e) {
+	} catch (IllegalAccessException e) {
+	    throw new WerecatException("Error accessing "+field+" on "+c, e);
+	} catch (InvocationTargetException e) {
+	    throw new WerecatException("Error invoking "+field+" on "+c, e);
+	}
+
 	String method;
 	if (Character.isLowerCase(field.charAt(0))) {
 	    char u = Character.toUpperCase(field.charAt(0));
