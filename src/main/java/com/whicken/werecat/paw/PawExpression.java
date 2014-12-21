@@ -18,4 +18,7 @@ public class PawExpression<T> {
     public String toString() {
 	return expr.toString();
     }
+    public Expression getExpr() {
+	return expr;
+    }
 }

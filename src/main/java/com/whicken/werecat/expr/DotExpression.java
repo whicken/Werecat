@@ -96,4 +96,7 @@ public class DotExpression extends UnaryExpression {
 	b.append(field);
 	return b.toString();
     }
+    public String getField() {
+	return field;
+    }
 }

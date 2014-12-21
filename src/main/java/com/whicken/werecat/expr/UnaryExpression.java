@@ -5,4 +5,7 @@ public abstract class UnaryExpression extends Expression {
     public UnaryExpression(Expression expr) {
 	this.expr = expr;
     }
+    public Expression getOperand() {
+	return expr;
+    }
 }

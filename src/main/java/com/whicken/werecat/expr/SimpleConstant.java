@@ -17,4 +17,7 @@ public class SimpleConstant extends Expression {
 	    return "\""+value.toString()+"\"";
 	return value.toString();
     }
+    public Object getValue() {
+	return value;
+    }
 }

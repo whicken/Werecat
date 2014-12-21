@@ -10,6 +10,10 @@ public class NotExpression extends UnaryExpression {
 	return asBoolean(expr.getValue(context)) ? Boolean.FALSE : Boolean.TRUE;
     }
     public String toString() {
-	return "!"+expr.toString();
+	// TODO: Improve parentheses logic
+	if (expr instanceof BinaryExpression)
+	    return "!("+expr.toString()+")";
+        else
+	    return "!"+expr.toString();
     }
 }

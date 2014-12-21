@@ -64,4 +64,10 @@ public class DotMethodExpression extends UnaryExpression {
 	b.append(")");
 	return b.toString();
     }
+    public String getMethod() {
+	return method;
+    }
+    public List<Expression> getArguments() {
+	return args;
+    }
 }

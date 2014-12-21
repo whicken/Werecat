@@ -48,4 +48,10 @@ public class MethodExpression extends Expression {
 	b.append(")");
 	return b.toString();
     }
+    public String getMethod() {
+	return method.getName();
+    }
+    public Expression[] getArguments() {
+	return args;
+    }
 }

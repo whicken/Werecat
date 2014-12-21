@@ -9,4 +9,10 @@ public abstract class BinaryExpression extends Expression {
 	this.lhs = lhs;
 	this.rhs = rhs;
     }
+    public Expression getLHS() {
+	return lhs;
+    }
+    public Expression getRHS() {
+	return rhs;
+    }
 }

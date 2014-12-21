@@ -32,4 +32,10 @@ public class BlindMethod extends Expression {
 	b.append(")");
 	return b.toString();
     }
+    public String getMethod() {
+	return method;
+    }
+    public Expression[] getArguments() {
+	return args;
+    }
 }
