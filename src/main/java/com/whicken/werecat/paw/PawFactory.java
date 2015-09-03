@@ -11,8 +11,8 @@ import java.util.List;
 /**
  * This class hides the RuleContext implementation.
  */
-class PawFactory extends RuleFactory {
-    PawFactory(Class context) {
+public class PawFactory extends RuleFactory {
+    public PawFactory(Class context) {
 	super(context);
     }
     public Expression createField(String key) {

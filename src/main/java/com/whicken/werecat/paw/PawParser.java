@@ -16,6 +16,10 @@ public class PawParser<T> {
     public PawParser(Class c) {
 	factory = new PawFactory(c);
     }
+    // For deeper customization, primarily injecting new keywords
+    public void setFactory(PawFactory f) {
+	factory = f;
+    }
     public PawExpression<T> parse(String expr) {
 	try {
 	    Expression e = ExpressionParser.parse(expr, factory);
