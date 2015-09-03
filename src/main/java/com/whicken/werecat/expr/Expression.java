@@ -69,4 +69,7 @@ public abstract class Expression {
 	}
 	return true;
     }
+    public void accept(ExpressionVisitor v) {
+	v.visit(this);
+    }
 }

@@ -15,4 +15,9 @@ public abstract class BinaryExpression extends Expression {
     public Expression getRHS() {
 	return rhs;
     }
+    public void accept(ExpressionVisitor v) {
+	super.accept(v);
+	lhs.accept(v);
+	rhs.accept(v);
+    }
 }

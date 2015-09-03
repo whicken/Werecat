@@ -54,4 +54,12 @@ public class MethodExpression extends Expression {
     public Expression[] getArguments() {
 	return args;
     }
+    public void accept(ExpressionVisitor v) {
+	super.accept(v);
+	if (args != null) {
+	    for (int i = 0; i < args.length; ++i) {
+		args[i].accept(v);
+	    }
+	}
+    }
 }

@@ -8,4 +8,8 @@ public abstract class UnaryExpression extends Expression {
     public Expression getOperand() {
 	return expr;
     }
+    public void accept(ExpressionVisitor v) {
+	super.accept(v);
+	expr.accept(v);
+    }
 }
