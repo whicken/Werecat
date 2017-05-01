@@ -1,6 +1,7 @@
 package com.whicken.werecat.paw;
 
 import com.whicken.werecat.expr.Expression;
+import com.whicken.werecat.expr.ExpressionVisitor;
 
 public class PawExpression<T> {
     Expression expr;
@@ -20,5 +21,8 @@ public class PawExpression<T> {
     }
     public Expression getExpr() {
 	return expr;
+    }
+    public void accept(ExpressionVisitor v) {
+	expr.accept(v);
     }
 }
