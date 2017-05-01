@@ -151,8 +151,8 @@ unaryExprOther returns [Expression value]
     ;
 
 factor returns [Expression value]
-    : n=INTLITERAL { $value = new SimpleConstant(new Integer($n.text)); }
-    | n=LONGLITERAL { $value = new SimpleConstant(new Long($n.text)); }
+    : n=INTLITERAL { $value = SimpleConstant.parseInt($n.text); }
+    | n=LONGLITERAL { $value = SimpleConstant.parseLong($n.text); }
     | n=FLOATLITERAL { $value = new SimpleConstant(new Float($n.text)); }
     | n=DOUBLELITERAL { $value = new SimpleConstant(new Double($n.text)); }
     | n2=reference { $value = $n2.value; }

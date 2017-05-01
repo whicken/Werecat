@@ -29,6 +29,15 @@ public class ExpressionParserTest extends TestCase {
 	assertTrue(e instanceof SimpleConstant);
 	assertTrue(e.getValue(null) instanceof Integer);
 
+	// If the number's too long, auto convert to Long
+	e = ExpressionParser.parse("1491325994222", factory);
+	assertTrue(e instanceof SimpleConstant);
+	assertTrue(e.getValue(null) instanceof Long);
+
+	e = ExpressionParser.parse("1L", factory);
+	assertTrue(e instanceof SimpleConstant);
+	assertTrue(e.getValue(null) instanceof Long);
+
 	e = ExpressionParser.parse("\"test\"", factory);
 	assertTrue(e instanceof SimpleConstant);
 	assertTrue(e.getValue(null) instanceof String);
@@ -36,6 +45,14 @@ public class ExpressionParserTest extends TestCase {
 	assertEquals("\"test\"", e.toString());
 
 	e = ExpressionParser.parse("0.23", factory);
+	assertTrue(e instanceof SimpleConstant);
+	assertTrue(e.getValue(null) instanceof Double);
+
+	e = ExpressionParser.parse("0.23f", factory);
+	assertTrue(e instanceof SimpleConstant);
+	assertTrue(e.getValue(null) instanceof Float);
+
+	e = ExpressionParser.parse("0.23d", factory);
 	assertTrue(e instanceof SimpleConstant);
 	assertTrue(e.getValue(null) instanceof Double);
 

@@ -20,4 +20,15 @@ public class SimpleConstant extends Expression {
     public Object getValue() {
 	return value;
     }
+    // Auto convert to long if the number is too big
+    public static SimpleConstant parseInt(String s) {
+	try {
+	    return new SimpleConstant(new Integer(s));
+	} catch (NumberFormatException e) {
+	    return new SimpleConstant(new Long(s));
+	}
+    }
+    public static SimpleConstant parseLong(String s) {
+	return new SimpleConstant(new Long(s.substring(0, s.length()-1)));
+    }
 }

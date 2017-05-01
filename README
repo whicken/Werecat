@@ -1,2 +1,8 @@
 See the doc folder for information and examples.  You will need to run 
 ANTLR manually to regenerate the grammar for now.
+
+Note that Werecat requires Log4j version 1.x to run.
+
+https://www.slf4j.org/manual.html
+https://logging.apache.org/log4j/2.x/manual/migration.html
+https://logging.apache.org/log4j/2.x/log4j-core/dependency-info.html
