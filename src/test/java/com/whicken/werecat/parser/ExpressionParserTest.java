@@ -104,6 +104,10 @@ public class ExpressionParserTest extends TestCase {
 	assertEquals("0 <= 0", e.toString());
 	e = ExpressionParser.parse("1 <= 0", factory);
 	assertEquals(Boolean.FALSE, e.getValue(null));
+
+	e = ExpressionParser.parse("1/2", factory);
+	assertTrue(e instanceof DivExpression);
+	assertEquals(0.5, e.getValue(null));
     }
     // Test syntactic sugar on JSON
     public void testJSON() throws Exception
