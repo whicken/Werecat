@@ -17,6 +17,8 @@ public abstract class Expression {
 	    return ((Number) o).doubleValue() != 0;
 	if (o instanceof Character)
 	    return ((Character) o).charValue() != 0;
+	if (o instanceof String)
+	    return !((String) o).isEmpty();
 	throw new WerecatException("Unexpected boolean conversion: "+
 				   o.getClass());
     }
