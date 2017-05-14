@@ -2,6 +2,7 @@ package com.whicken.werecat.expr;
 
 import com.whicken.werecat.RuleContext;
 import com.whicken.werecat.WerecatException;
+import org.joda.money.Money;
 
 public abstract class Expression {
     public abstract Object getValue(RuleContext context);
@@ -32,6 +33,8 @@ public abstract class Expression {
 	    return ((Boolean) o).booleanValue() ? 1 : 0;
 	if (o instanceof Character)
 	    return ((Character) o).charValue();
+	if (o instanceof Money)
+	    return ((Money) o).getAmount().doubleValue();
 	if (o != null)
 	    return Double.parseDouble(o.toString());
 	throw new WerecatException("Unexpected numeric conversion: "+
@@ -43,14 +46,17 @@ public abstract class Expression {
     public static String asString(Object o) {
 	if (o instanceof String)
 	    return (String) o;
-	else if (o == null)
+	if (o instanceof Money)
+	    return ((Money) o).getAmount().toString();
+	if (o == null)
 	    return null;
 	return o.toString();
     }
     static boolean isNumber(Object o) {
 	return o instanceof Number ||
 	    o instanceof Character ||
-	    o instanceof Boolean;
+	    o instanceof Boolean ||
+	    o instanceof Money;
     }
     static boolean isStringNumber(String s) {
 	if (s == null || s.length() == 0)

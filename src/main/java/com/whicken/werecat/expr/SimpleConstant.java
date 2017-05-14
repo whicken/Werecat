@@ -1,6 +1,7 @@
 package com.whicken.werecat.expr;
 
 import com.whicken.werecat.RuleContext;
+import org.joda.money.Money;
 
 public class SimpleConstant extends Expression {
     Object value;
@@ -15,6 +16,8 @@ public class SimpleConstant extends Expression {
 	    return "null";
 	if (value instanceof String)
 	    return "\""+value.toString()+"\"";
+	if (value instanceof Money)
+	    return ((Money) value).getAmount().toString();
 	return value.toString();
     }
     public Object getValue() {
