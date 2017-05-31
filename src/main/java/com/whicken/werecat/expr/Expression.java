@@ -2,6 +2,8 @@ package com.whicken.werecat.expr;
 
 import com.whicken.werecat.RuleContext;
 import com.whicken.werecat.WerecatException;
+import java.util.Date;
+import net.balusc.util.DateUtil;
 import org.joda.money.Money;
 
 public abstract class Expression {
@@ -23,6 +25,27 @@ public abstract class Expression {
 	throw new WerecatException("Unexpected boolean conversion: "+
 				   o.getClass());
     }
+    public static Date asDate(Object o) {
+	if (o instanceof Date)
+	    return (Date) o;
+	if (o instanceof String) {
+	    String str = (String) o;
+	    try {
+		return DateUtil.parse(str);
+	    } catch (Throwable t) {
+		throw new WerecatException("Unexpected date conversion: "+str);
+	    }
+	}
+	// Use "one year minimum to prevent accidental conversions. It's a
+	// bit of a hack for sure.
+	if (o instanceof Number) {
+	    long ts = ((Number) o).longValue();
+	    if (ts > 31536000000L)
+		return new Date(ts);
+	}
+	throw new WerecatException("Unexpected date conversion: "+
+				   o.getClass());
+    }
     public double getDouble(RuleContext context) {
 	return asDouble(getValue(context));
     }
@@ -35,6 +58,8 @@ public abstract class Expression {
 	    return ((Character) o).charValue();
 	if (o instanceof Money)
 	    return ((Money) o).getAmount().doubleValue();
+	if (o instanceof Date)
+	    return ((Date) o).getTime();
 	if (o != null)
 	    return Double.parseDouble(o.toString());
 	throw new WerecatException("Unexpected numeric conversion: "+
@@ -52,13 +77,14 @@ public abstract class Expression {
 	    return null;
 	return o.toString();
     }
-    static boolean isNumber(Object o) {
-	return o instanceof Number ||
-	    o instanceof Character ||
-	    o instanceof Boolean ||
-	    o instanceof Money;
+    public static boolean isNumber(Object o) {
+	if (o instanceof Number || o instanceof Money)
+	    return true;
+	if (o instanceof String && isStringNumber((String) o))
+	    return true;
+	return false;
     }
-    static boolean isStringNumber(String s) {
+    public static boolean isStringNumber(String s) {
 	if (s == null || s.length() == 0)
 	    return false;
 	boolean dot = false;
