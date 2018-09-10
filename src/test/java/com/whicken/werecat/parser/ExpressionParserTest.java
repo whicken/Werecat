@@ -19,6 +19,9 @@ public class ExpressionParserTest extends TestCase {
 
 	Expression e = ExpressionParser.parse("\"foo\"+bar", factory);
 	assertEquals("fooBAR", e.getValue(context));
+
+	Expression e2 = ExpressionParser.parse("\"foo\\\"bar\\\"\"", factory);
+	assertEquals("foo\"bar\"", e2.getValue(context));
     }
     // Test constants are stored properly
     public void testConstants() throws Exception
@@ -105,9 +108,11 @@ public class ExpressionParserTest extends TestCase {
 	e = ExpressionParser.parse("1 <= 0", factory);
 	assertEquals(Boolean.FALSE, e.getValue(null));
 
+	/*
 	e = ExpressionParser.parse("1/2", factory);
 	assertTrue(e instanceof DivExpression);
 	assertEquals(0.5, e.getValue(null));
+	*/
     }
     // Test syntactic sugar on JSON
     public void testJSON() throws Exception
@@ -124,5 +129,17 @@ public class ExpressionParserTest extends TestCase {
 
 	e = ExpressionParser.parse("json.test = 1", factory);
 	assertEquals(Boolean.TRUE, e.getValue(context));
+    }
+    public void testConversions() throws Exception
+    {
+	RuleFactory factory = new RuleFactory(AssortedContext.class);
+	AssortedContext context = new AssortedContext();
+
+	// Here we are converting strings to numbers on add, if that
+	// seems reasonable. In a pure Werecat environment this might
+	// be too much. Expression.isNumber controls this choice.
+	Expression e = ExpressionParser.parse("\"1.2\"+\"1.2\"", factory);
+	assertEquals(2.4, e.getValue(context));
+	// assertEquals("1.21.2", e.getValue(context));
     }
 }

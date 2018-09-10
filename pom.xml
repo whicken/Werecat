@@ -39,6 +39,11 @@
       <scope>system</scope>
       <systemPath>${project.basedir}/src/main/resources/balusc.jar</systemPath>
     </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <version>1.4</version>
+    </dependency>
   </dependencies>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

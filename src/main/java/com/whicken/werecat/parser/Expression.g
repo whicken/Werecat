@@ -15,6 +15,7 @@ package com.whicken.werecat.parser;
 
 import com.whicken.werecat.*;
 import com.whicken.werecat.expr.*;
+import org.apache.commons.text.StringEscapeUtils;
 }
 
 @lexer::header {
@@ -156,7 +157,7 @@ factor returns [Expression value]
     | n=FLOATLITERAL { $value = new SimpleConstant(new Float($n.text)); }
     | n=DOUBLELITERAL { $value = new SimpleConstant(new Double($n.text)); }
     | n2=reference { $value = $n2.value; }
-    | n=STRINGLITERAL { $value = new SimpleConstant($n.text.substring(1, $n.text.length()-1)); }
+    | n=STRINGLITERAL { $value = new SimpleConstant(StringEscapeUtils.unescapeJava($n.text.substring(1, $n.text.length()-1))); }
     | n=CHARLITERAL { $value = new SimpleConstant(new Character($n.text.charAt(1))); }
     | n=REGEXPLITERAL { $value = new RegexpConstant($n.text); }
     | n2=parExpr { $value = $n2.value; }
