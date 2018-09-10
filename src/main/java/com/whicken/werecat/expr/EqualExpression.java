@@ -33,6 +33,7 @@ public class EqualExpression extends BinaryExpression {
 	    }
 	    return Boolean.FALSE;
 	}
+	// TODO: Dates
 	return asString(l).equals(asString(r)) ? Boolean.TRUE : Boolean.FALSE;
     }
     public String toString() {
