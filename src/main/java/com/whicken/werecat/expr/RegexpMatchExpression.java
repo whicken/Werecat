@@ -29,6 +29,13 @@ public class RegexpMatchExpression extends BinaryExpression {
 		return new Integer(m.start());
 	    }
 	    return null;
+	} else if (l instanceof Pattern) {
+	    Pattern pattern = (Pattern) l;
+	    Matcher m = pattern.matcher(asString(r));
+	    if (m.find()) {
+		return new Integer(m.start());
+	    }
+	    return null;
 	}
 	throw new WerecatException("Unsupported types in =~: "+l+" =~ "+r);
     }
