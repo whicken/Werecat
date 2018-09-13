@@ -28,6 +28,10 @@ public class RegexpNoMatchExpression extends BinaryExpression {
 	    }
 	    Matcher m = pattern.matcher(asString(l));
 	    return m.find() ? Boolean.FALSE : Boolean.TRUE;
+	} else if (l instanceof Pattern) {
+	    Pattern pattern = (Pattern) l;
+	    Matcher m = pattern.matcher(asString(r));
+	    return m.find() ? Boolean.FALSE : Boolean.TRUE;
 	}
 	throw new WerecatException("Unsupported types in !~: "+l+" !~ "+r);
     }

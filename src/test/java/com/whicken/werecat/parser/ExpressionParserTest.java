@@ -141,5 +141,18 @@ public class ExpressionParserTest extends TestCase {
 	Expression e = ExpressionParser.parse("\"1.2\"+\"1.2\"", factory);
 	assertEquals(2.4, e.getValue(context));
 	// assertEquals("1.21.2", e.getValue(context));
+
+	e = ExpressionParser.parse("false >= 0", factory);
+	try {
+	    assertEquals(false, e.getValue(context));
+	    fail("Evaluation should throw an exception - no implicit conversion");
+	} catch (NumberFormatException ex) {
+	}
+
+	e = ExpressionParser.parse("\"foo\" =~ /foo/", factory);
+	assertEquals(true, e.getValue(context));
+
+	e = ExpressionParser.parse("\"foo\" =~ /bar/", factory);
+	assertEquals(false, e.getValue(context));
     }
 }

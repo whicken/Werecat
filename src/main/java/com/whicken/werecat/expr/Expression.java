@@ -49,11 +49,10 @@ public abstract class Expression {
     public double getDouble(RuleContext context) {
 	return asDouble(getValue(context));
     }
+    // Boolean's no longer promote to double
     public static double asDouble(Object o) {
 	if (o instanceof Number)
 	    return ((Number) o).doubleValue();
-	if (o instanceof Boolean)
-	    return ((Boolean) o).booleanValue() ? 1 : 0;
 	if (o instanceof Character)
 	    return ((Character) o).charValue();
 	if (o instanceof Money)

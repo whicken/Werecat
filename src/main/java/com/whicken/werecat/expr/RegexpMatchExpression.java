@@ -25,17 +25,11 @@ public class RegexpMatchExpression extends BinaryExpression {
 		pattern = Pattern.compile(asString(r));
 	    }
 	    Matcher m = pattern.matcher(asString(l));
-	    if (m.find()) {
-		return new Integer(m.start());
-	    }
-	    return null;
+	    return m.find() ? Boolean.TRUE : Boolean.FALSE;
 	} else if (l instanceof Pattern) {
 	    Pattern pattern = (Pattern) l;
 	    Matcher m = pattern.matcher(asString(r));
-	    if (m.find()) {
-		return new Integer(m.start());
-	    }
-	    return null;
+	    return m.find() ? Boolean.TRUE : Boolean.FALSE;
 	}
 	throw new WerecatException("Unsupported types in =~: "+l+" =~ "+r);
     }

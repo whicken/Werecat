@@ -93,6 +93,6 @@ public class PawParserTest extends TestCase {
 	assertEquals(Boolean.TRUE, expr.getValue(sample));
 
 	expr = parser.parse("str =~ /a/");
-	assertEquals(0, expr.getValue(sample));
+	assertEquals(true, expr.getValue(sample));
     }
 }
