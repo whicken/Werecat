@@ -1,6 +1,7 @@
 package com.whicken.werecat.expr;
 
 import com.whicken.werecat.RuleContext;
+import com.whicken.werecat.WerecatException;
 import java.util.Date;
 
 public class GEExpression extends BinaryExpression {
@@ -17,8 +18,13 @@ public class GEExpression extends BinaryExpression {
 	    return ld.getTime() >= rd.getTime() ?
 		Boolean.TRUE : Boolean.FALSE;
 	}
-	// FR: If either side is not a number, do string comparison
-	return asDouble(l) >= asDouble(r) ? Boolean.TRUE : Boolean.FALSE;
+	if (isNumber(l) && isNumber(r)) {
+	    return asDouble(l) >= asDouble(r) ? Boolean.TRUE : Boolean.FALSE;
+	}
+	if (isStringComparable(l) && isStringComparable(r)) {
+	    return asString(l).compareTo(asString(r)) >= 0 ? Boolean.TRUE : Boolean.FALSE;
+	}
+	throw new WerecatException("Unsupported types in >=: "+l+" >= "+r);
     }
     public String toString() {
 	StringBuffer b = new StringBuffer();

@@ -146,7 +146,7 @@ public class ExpressionParserTest extends TestCase {
 	try {
 	    assertEquals(false, e.getValue(context));
 	    fail("Evaluation should throw an exception - no implicit conversion");
-	} catch (NumberFormatException ex) {
+	} catch (WerecatException ex) {
 	}
 
 	e = ExpressionParser.parse("\"foo\" =~ /foo/", factory);

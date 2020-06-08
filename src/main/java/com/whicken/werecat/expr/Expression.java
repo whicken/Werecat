@@ -102,6 +102,11 @@ public abstract class Expression {
 	}
 	return true;
     }
+    // Defines rules where we will convert to a String for comparisons
+    public static boolean isStringComparable(Object o) {
+	return o instanceof String || o instanceof Date ||
+	    o instanceof Number || o instanceof Money;
+    }
     public void accept(ExpressionVisitor v) {
 	v.visit(this);
     }
