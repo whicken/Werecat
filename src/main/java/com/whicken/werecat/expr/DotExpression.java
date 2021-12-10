@@ -83,7 +83,7 @@ public class DotExpression extends UnaryExpression {
 		    return obj.get(field);
 		return null;
 	    } catch (JSONException e) {
-		// Note: This might be worthy of a log4j warning
+		// Note: This might be worthy of a warning
 	    }
 	}
 
