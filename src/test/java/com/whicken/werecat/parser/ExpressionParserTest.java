@@ -164,10 +164,16 @@ public class ExpressionParserTest extends TestCase {
 	Expression e = ExpressionParser.parse("1 in (1, 2)", factory);
 	assertEquals(true, e.getValue(context));
 
+	e = ExpressionParser.parse("2 in (1, 2)", factory);
+	assertEquals(true, e.getValue(context));
+
 	e = ExpressionParser.parse("0 in (1, 2)", factory);
 	assertEquals(false, e.getValue(context));
 
 	e = ExpressionParser.parse("\"a\" in (\"a\", \"b\")", factory);
+	assertEquals(true, e.getValue(context));
+
+	e = ExpressionParser.parse("\"b\" in (\"a\", \"b\")", factory);
 	assertEquals(true, e.getValue(context));
 
 	e = ExpressionParser.parse("\"c\" in (\"a\", \"b\")", factory);
