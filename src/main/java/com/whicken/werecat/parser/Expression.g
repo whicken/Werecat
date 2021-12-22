@@ -110,6 +110,7 @@ eqExpr returns [Expression value]
       | '!=' rhs=relExpr { $value=new NEExpression($value, $rhs.value); }
       | '=~' rhs=relExpr { $value=new RegexpMatchExpression($value, $rhs.value); }
       | '!~' rhs=relExpr { $value=new RegexpNoMatchExpression($value, $rhs.value); }
+      | IN args=arguments { $value=new InExpression($value, $args.value); }
       )*
     ;
 
@@ -205,6 +206,8 @@ TRUE: ('true'|'TRUE');
 FALSE: ('false'|'FALSE');
 
 NULL: ('null'|'NULL');
+
+IN: ('in'|'IN');
 
 IDENTIFIER: IdentifierStart IdentifierPart* ;
 

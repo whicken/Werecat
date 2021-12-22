@@ -1,3 +1,3 @@
 Requires ANTLR v3
 
-java org.antlr.Tool Expression.g
+java -cp antlr-3.5.2-complete.jar org.antlr.Tool Expression.g

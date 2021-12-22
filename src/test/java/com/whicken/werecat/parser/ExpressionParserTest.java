@@ -155,4 +155,22 @@ public class ExpressionParserTest extends TestCase {
 	e = ExpressionParser.parse("\"foo\" =~ /bar/", factory);
 	assertEquals(false, e.getValue(context));
     }
+
+    public void testInOperator() throws Exception
+    {
+	RuleFactory factory = new RuleFactory(AssortedContext.class);
+	AssortedContext context = new AssortedContext();
+
+	Expression e = ExpressionParser.parse("1 in (1, 2)", factory);
+	assertEquals(true, e.getValue(context));
+
+	e = ExpressionParser.parse("0 in (1, 2)", factory);
+	assertEquals(false, e.getValue(context));
+
+	e = ExpressionParser.parse("\"a\" in (\"a\", \"b\")", factory);
+	assertEquals(true, e.getValue(context));
+
+	e = ExpressionParser.parse("\"c\" in (\"a\", \"b\")", factory);
+	assertEquals(false, e.getValue(context));
+    }
 }
