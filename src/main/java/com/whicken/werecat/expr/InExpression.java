@@ -31,24 +31,29 @@ public class InExpression extends Expression {
 	    Object r = rhs[i].getValue(context);
 	    if (r != null) {
 	        if (isNumber(l)) {
-	            if (isNumber(r))
-		        return asDouble(l) == asDouble(r) ? Boolean.TRUE : Boolean.FALSE;
-	            String rstr = asString(r);
-	            if (isStringNumber(rstr)) {
-		        double d = Double.parseDouble(rstr);
-		        return asDouble(l) == d ? Boolean.TRUE : Boolean.FALSE;
-	            }
-	            return Boolean.FALSE;
+	            if (isNumber(r)) {
+			if (asDouble(l) == asDouble(r))
+			    return Boolean.TRUE;
+		    } else {
+	                String rstr = asString(r);
+	                if (isStringNumber(rstr)) {
+		            double d = Double.parseDouble(rstr);
+		            if (asDouble(l) == d)
+			        return Boolean.TRUE;
+	                }
+		    }
 	        } else if (isNumber(r)) {
 	            String lstr = asString(l);
 	            if (isStringNumber(lstr)) {
 		        double d = Double.parseDouble(lstr);
-		        return d == asDouble(r) ? Boolean.TRUE : Boolean.FALSE;
+		        if (d == asDouble(r))
+			    return Boolean.TRUE;
 	            }
-	            return Boolean.FALSE;
-	        }
-	        // TODO: Dates
-	        return asString(l).equals(asString(r)) ? Boolean.TRUE : Boolean.FALSE;
+	        } else {
+	            // TODO: Dates
+		    if (asString(l).equals(asString(r)))
+		        return Boolean.TRUE;
+		}
 	    }
 	}
 	return Boolean.FALSE;
